@@ -2,7 +2,7 @@ name: AI Trading Scanner
 on:
   schedule:
     - cron: '*/10 7-20 * * *'  # Every 10 min 08:00-21:00 BST
-  workflow_dispatch:  # Enable manual triggers
+  workflow_dispatch:            # Manual triggers
 
 permissions:
   contents: write
@@ -14,7 +14,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true
           fetch-depth: 0
 
       - name: Setup Node
@@ -23,8 +22,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: |
-          npm install axios technicalindicators cheerio mathjs
+        run: npm install axios technicalindicators cheerio mathjs
           
       - name: Run scanner
         run: node fetch.js
