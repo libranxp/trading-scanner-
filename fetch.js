@@ -2,83 +2,77 @@ const fs = require('fs');
 const axios = require('axios');
 const ti = require('technicalindicators');
 
-// Scanner Configuration
-const SCANNER_CONFIG = {
-  CRYPTO: {
-    minVolume: 10000000, // $10M
-    rsiRange: [40, 70],
-    priceChange: 0.02 // 2%
-  },
-  STOCKS: {
-    minVolume: 500000, // shares
-    rsiRange: [45, 75],
-    priceChange: 0.01 // 1%
+// Enhanced error handling
+async function fetchWithRetry(url, retries = 3) {
+  try {
+    const response = await axios.get(url, { timeout: 10000 });
+    return response.data;
+  } catch (error) {
+    if (retries > 0) {
+      console.log(`Retrying... (${retries} left)`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return fetchWithRetry(url, retries - 1);
+    }
+    throw error;
   }
-};
+}
 
 async function fetchTopCryptos() {
-  const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
-    params: {
-      vs_currency: 'usd',
-      order: 'market_cap_desc',
-      per_page: 100,
-      sparkline: true,
-      price_change_percentage: '24h'
-    }
-  });
-  return response.data;
+  const data = await fetchWithRetry(
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&sparkline=true&price_change_percentage=24h'
+  );
+  return data.filter(coin => coin?.sparkline_in_7d?.price); // Filter invalid data
 }
 
 function calculateIndicators(prices) {
-  const closes = prices.map(p => p[1]);
+  const closes = prices.slice(-90); // Use last 90 days for stability
   return {
-    rsi: ti.rsi({ values: closes.slice(-24), period: 14 }),
+    rsi: ti.rsi({ values: closes, period: 14 }).pop() || 50,
     macd: ti.macd({ 
-      values: closes, 
-      fastPeriod: 12, 
-      slowPeriod: 26, 
-      signalPeriod: 9 
-    }).pop(),
-    bb: ti.bollingerbands({ values: closes, period: 20, stdDev: 2 })
+      values: closes,
+      fastPeriod: 12,
+      slowPeriod: 26,
+      signalPeriod: 9
+    }).pop() || { histogram: 0 }
   };
 }
 
 async function scan() {
   try {
-    // 1. Fetch crypto data
+    console.log('Starting scan...');
     const cryptos = await fetchTopCryptos();
     
-    // 2. Process signals
-    const cryptoSignals = cryptos
-      .filter(coin => coin.total_volume >= SCANNER_CONFIG.CRYPTO.minVolume)
-      .map(coin => {
-        const indicators = calculateIndicators(coin.sparkline_in_7d.price);
-        return {
-          symbol: coin.symbol.toUpperCase(),
-          price: coin.current_price,
-          change24h: coin.price_change_percentage_24h,
-          volume: coin.total_volume,
-          rsi: indicators.rsi,
-          macd: indicators.macd.histogram,
-          bb: indicators.bb
-        };
-      })
-      .filter(signal => 
-        signal.rsi >= SCANNER_CONFIG.CRYPTO.rsiRange[0] &&
-        signal.rsi <= SCANNER_CONFIG.CRYPTO.rsiRange[1] &&
-        Math.abs(signal.change24h) >= SCANNER_CONFIG.CRYPTO.priceChange * 100
-      );
+    const signals = cryptos.map(coin => {
+      const indicators = calculateIndicators(coin.sparkline_in_7d.price);
+      return {
+        symbol: coin.symbol.toUpperCase(),
+        price: coin.current_price,
+        change24h: coin.price_change_percentage_24h || 0,
+        volume: coin.total_volume,
+        rsi: indicators.rsi,
+        macdHistogram: indicators.macd.histogram,
+        lastUpdated: new Date().toISOString()
+      };
+    }).filter(signal => 
+      signal.volume > 10000000 && 
+      signal.rsi >= 40 && 
+      signal.rsi <= 70
+    );
+
+    // Ensure data directory exists
+    if (!fs.existsSync('data')) fs.mkdirSync('data');
     
-    // 3. Save results
     fs.writeFileSync('data/crypto.json', JSON.stringify({
-      lastUpdated: new Date(),
-      data: cryptoSignals
+      lastUpdated: new Date().toISOString(),
+      data: signals
     }, null, 2));
-    
-    console.log(`Found ${cryptoSignals.length} crypto signals`);
-    
+
+    console.log(`Scan completed. Found ${signals.length} signals.`);
+    process.exit(0); // Explicit success exit
+
   } catch (error) {
     console.error('Scan failed:', error.message);
+    process.exit(1); // Explicit error exit
   }
 }
 
