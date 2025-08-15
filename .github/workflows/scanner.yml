@@ -20,12 +20,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          # Removed cache: npm since we're not using package-lock.json
 
       - name: Install dependencies
         run: |
-          npm install axios technicalindicators cheerio mathjs
-          rm -rf package*.json  # Remove these to prevent git tracking
+          # Install directly without creating package.json
+          npm install axios technicalindicators cheerio mathjs --no-package-lock --no-save
           
       - name: Run scanner
         run: node fetch.js
