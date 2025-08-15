@@ -3,62 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Trading Scanner</title>
+  <title>AI Trading Scanner Pro</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    .asset-card {
-      transition: all 0.2s ease;
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4895ef;
+      --danger: #f72585;
+      --success: #4cc9f0;
     }
-    .asset-card:hover {
-      transform: translateY(-2px);
+    .gradient-bg {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    .signal-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-    .rsi-overbought { color: #ef4444; }
-    .rsi-oversold { color: #10b981; }
+    .signal-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    .ai-score {
+      background: conic-gradient(var(--success) 0% var(--percent), #e2e8f0 var(--percent) 100%);
+    }
+    .positive { color: var(--success); }
+    .negative { color: var(--danger); }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-  <div class="container mx-auto px-4 py-8">
-    <header class="mb-8 text-center">
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">
-        <i class="fas fa-robot text-blue-500 mr-2"></i> AI Trading Scanner
-      </h1>
-      <div class="flex justify-center items-center space-x-4">
-        <button id="refreshBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
-          <i class="fas fa-sync-alt mr-2"></i> Refresh Data
-        </button>
-        <span class="text-sm text-gray-500">
-          Last update: <span id="lastUpdate" class="font-medium">--:--</span>
-        </span>
+<body class="bg-gray-50 font-sans">
+  <div class="min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+      <div class="container mx-auto px-4 py-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center mb-4 md:mb-0">
+            <i class="fas fa-robot text-3xl mr-3"></i>
+            <h1 class="text-2xl font-bold">AI Trading Scanner Pro</h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full">
+              <i class="fas fa-clock mr-1"></i>
+              Last update: <span id="lastUpdate">--:--</span>
+            </div>
+            <button id="refreshBtn" class="bg-white text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg flex items-center">
+              <i class="fas fa-sync-alt mr-2"></i> Refresh
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 bg-blue-50 border-b">
-          <h2 class="text-xl font-semibold text-blue-800">
-            <i class="fab fa-bitcoin text-yellow-500 mr-2"></i> Cryptocurrencies
-          </h2>
-        </div>
-        <div id="cryptoTable" class="divide-y divide-gray-100">
-          <div class="p-4 text-center text-gray-500">
-            Loading data...
-          </div>
-        </div>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Asset Toggle -->
+      <div class="flex mb-8 bg-white rounded-xl shadow-sm overflow-hidden max-w-md mx-auto">
+        <button class="asset-toggle active flex-1 py-3 px-6 font-medium" data-type="crypto">
+          <i class="fab fa-bitcoin mr-2"></i> Cryptocurrencies
+        </button>
+        <button class="asset-toggle flex-1 py-3 px-6 font-medium" data-type="stocks">
+          <i class="fas fa-chart-line mr-2"></i> Stocks
+        </button>
       </div>
 
-      <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 bg-blue-50 border-b">
-          <h2 class="text-xl font-semibold text-blue-800">
-            <i class="fas fa-chart-line text-blue-500 mr-2"></i> Stocks
-          </h2>
+      <!-- Signals Grid -->
+      <div id="signals-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Filled by JavaScript -->
+        <div class="col-span-full text-center py-12 text-gray-400">
+          <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+          <p>Loading market data...</p>
         </div>
-        <div id="stocksTable" class="divide-y divide-gray-100">
-          <div class="p-4 text-center text-gray-500">
-            Loading data...
+      </div>
+    </main>
+  </div>
+
+  <!-- Signal Card Template -->
+  <template id="signal-template">
+    <div class="signal-card bg-white rounded-xl overflow-hidden">
+      <div class="p-5 border-b flex justify-between items-start">
+        <div>
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+              <i class="fab fa-bitcoin text-yellow-500 crypto-icon hidden"></i>
+              <i class="fas fa-chart-line text-blue-500 stock-icon hidden"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg signal-symbol">BTC</h3>
+              <p class="text-sm text-gray-500 signal-name">Bitcoin</p>
+            </div>
           </div>
         </div>
+        <div class="text-right">
+          <p class="text-2xl font-bold signal-price">$00.00</p>
+          <p class="text-sm signal-change"><span class="change-amount">+0.00</span>%</p>
+        </div>
+      </div>
+      
+      <div class="p-5 grid grid-cols-2 gap-4">
+        <!-- AI Score -->
+        <div class="col-span-2">
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-sm font-medium text-gray-500">AI Confidence</span>
+            <span class="text-sm font-bold signal-score">-</span>
+          </div>
+          <div class="ai-score w-full h-2 rounded-full relative">
+            <div class="absolute inset-0 rounded-full bg-gray-200"></div>
+            <div class="absolute inset-0 rounded-full bg-green-400" style="width: var(--percent)"></div>
+          </div>
+        </div>
+        
+        <!-- Technical Indicators -->
+        <div>
+          <p class="text-xs text-gray-500">RSI (14)</p>
+          <p class="font-medium signal-rsi">-</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500">Volume (24h)</p>
+          <p class="font-medium signal-volume">-</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500">EMA (9/21)</p>
+          <p class="font-medium signal-ema">-</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500">ATR (14)</p>
+          <p class="font-medium signal-atr">-</p>
+        </div>
+        
+        <!-- Risk Management -->
+        <div class="col-span-2 mt-2">
+          <div class="grid grid-cols-3 gap-2 text-center bg-gray-50 p-2 rounded-lg">
+            <div>
+              <p class="text-xs text-gray-500">Stop Loss</p>
+              <p class="text-sm font-bold signal-sl">-</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Take Profit</p>
+              <p class="text-sm font-bold signal-tp">-</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Position</p>
+              <p class="text-sm font-bold signal-pos">-</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- AI Validation -->
+        <div class="col-span-2 mt-2">
+          <p class="text-xs text-gray-500">AI Validation</p>
+          <p class="text-sm signal-validation">-</p>
+        </div>
+      </div>
+      
+      <!-- Actions -->
+      <div class="px-5 pb-5 grid grid-cols-2 gap-3">
+        <a href="#" target="_blank" class="signal-tradingview btn bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 px-3 rounded-lg text-sm text-center">
+          <i class="fas fa-chart-line mr-1"></i> TradingView
+        </a>
+        <button class="signal-news btn bg-gray-100 hover:bg-gray-200 py-2 px-3 rounded-lg text-sm text-center">
+          <i class="fas fa-newspaper mr-1"></i> News (3)
+        </a>
+      </div>
+    </div>
+  </template>
+
+  <!-- News Modal -->
+  <div id="news-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg w-full max-w-md max-h-[80vh] overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h3 class="font-bold text-lg modal-title">News for BTC</h3>
+        <button class="close-modal text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto max-h-[65vh] modal-content">
+        <!-- News items will be inserted here -->
       </div>
     </div>
   </div>
@@ -66,6 +187,7 @@
   <script>
     class TradingDashboard {
       constructor() {
+        this.currentType = 'crypto';
         this.init();
       }
 
@@ -75,100 +197,172 @@
       }
 
       setupEventListeners() {
+        // Asset type toggle
+        document.querySelectorAll('.asset-toggle').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelector('.asset-toggle.active').classList.remove('active');
+            btn.classList.add('active');
+            this.currentType = btn.dataset.type;
+            this.loadData();
+          });
+        });
+
+        // Manual refresh
         document.getElementById('refreshBtn').addEventListener('click', () => {
           this.toggleLoading(true);
           this.loadData();
+        });
+
+        // Close modal
+        document.querySelector('.close-modal').addEventListener('click', () => {
+          document.getElementById('news-modal').classList.add('hidden');
         });
       }
 
       toggleLoading(isLoading) {
         const btn = document.getElementById('refreshBtn');
-        btn.innerHTML = isLoading
-          ? '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...'
-          : '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
-        btn.disabled = isLoading;
+        if (isLoading) {
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Refreshing';
+          btn.disabled = true;
+        } else {
+          btn.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> Refresh';
+          btn.disabled = false;
+        }
       }
 
       async loadData() {
         try {
-          const timestamp = new Date().getTime();
-          const [cryptoRes, stocksRes] = await Promise.all([
-            fetch(`data/crypto.json?t=${timestamp}`),
-            fetch(`data/stocks.json?t=${timestamp}`)
-          ]);
+          const container = document.getElementById('signals-container');
+          container.innerHTML = `
+            <div class="col-span-full text-center py-12 text-gray-400">
+              <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+              <p>Loading ${this.currentType} data...</p>
+            </div>`;
 
-          if (!cryptoRes.ok || !stocksRes.ok) throw new Error('Network error');
-
-          const [cryptoData, stocksData] = await Promise.all([
-            cryptoRes.json(),
-            stocksRes.json()
-          ]);
-
-          this.renderTable('cryptoTable', cryptoData);
-          this.renderTable('stocksTable', stocksData);
-          this.updateTimestamp(cryptoData);
+          const response = await fetch(`data/${this.currentType}.json?t=${Date.now()}`);
+          if (!response.ok) throw new Error('Failed to fetch data');
+          
+          const { data } = await response.json();
+          this.renderSignals(data);
+          
+          document.getElementById('lastUpdate').textContent = 
+            new Date().toLocaleTimeString();
         } catch (error) {
-          console.error('Failed to load data:', error);
+          console.error('Error loading data:', error);
           this.showError();
         } finally {
           this.toggleLoading(false);
         }
       }
 
-      renderTable(containerId, assets) {
-        const container = document.getElementById(containerId);
+      renderSignals(signals) {
+        const container = document.getElementById('signals-container');
+        const template = document.getElementById('signal-template');
         
-        if (!assets || assets.length === 0) {
+        if (!signals || signals.length === 0) {
           container.innerHTML = `
-            <div class="p-4 text-center text-yellow-600">
-              <i class="fas fa-exclamation-circle mr-2"></i>
-              No data available
+            <div class="col-span-full text-center py-12 text-gray-400">
+              <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+              <p>No ${this.currentType} data available</p>
             </div>`;
           return;
         }
 
-        container.innerHTML = assets.map(asset => `
-          <div class="asset-card p-4 hover:bg-gray-50">
-            <div class="flex justify-between items-center mb-2">
-              <div>
-                <span class="font-bold text-lg">${asset.symbol}</span>
-                <span class="text-sm text-gray-500 ml-2">${asset.name}</span>
-              </div>
-              <span class="text-xl font-bold">$${asset.price.toFixed(2)}</span>
-            </div>
-            <div class="grid grid-cols-3 gap-2 text-sm">
-              <div class="text-center ${asset.rsi > 70 ? 'rsi-overbought' : asset.rsi < 30 ? 'rsi-oversold' : ''}">
-                <div class="font-medium">RSI</div>
-                <div>${asset.rsi.toFixed(1)}</div>
-              </div>
-              <div class="text-center">
-                <div class="font-medium">EMA(9)</div>
-                <div>$${asset.ema9.toFixed(2)}</div>
-              </div>
-              <div class="text-center">
-                <div class="font-medium">EMA(21)</div>
-                <div>$${asset.ema21.toFixed(2)}</div>
-              </div>
-            </div>
-          </div>
-        `).join('');
+        container.innerHTML = '';
+        
+        signals.forEach(signal => {
+          const card = template.content.cloneNode(true);
+          
+          // Set basic info
+          card.querySelector('.signal-symbol').textContent = signal.symbol;
+          card.querySelector('.signal-name').textContent = signal.name;
+          card.querySelector('.signal-price').textContent = `$${signal.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})`;
+          
+          // Set change percentage
+          const changeElement = card.querySelector('.signal-change');
+          const changeAmount = card.querySelector('.change-amount');
+          changeAmount.textContent = signal.change24h >= 0 ? `+${signal.change24h.toFixed(2)}` : signal.change24h.toFixed(2);
+          changeElement.className = `text-sm signal-change ${signal.change24h >= 0 ? 'positive' : 'negative'}`;
+          
+          // Set icons
+          if (this.currentType === 'crypto') {
+            card.querySelector('.crypto-icon').classList.remove('hidden');
+          } else {
+            card.querySelector('.stock-icon').classList.remove('hidden');
+          }
+          
+          // Set technical indicators
+          card.querySelector('.signal-rsi').textContent = signal.rsi.toFixed(1);
+          card.querySelector('.signal-volume').textContent = signal.volume >= 1000000 
+            ? `$${(signal.volume / 1000000).toFixed(1)}M` 
+            : `$${signal.volume.toLocaleString()}`;
+          card.querySelector('.signal-ema').textContent = `${signal.ema9.toFixed(2)} / ${signal.ema21.toFixed(2)}`;
+          card.querySelector('.signal-atr').textContent = signal.atr.toFixed(4);
+          
+          // Set AI score
+          const scoreElement = card.querySelector('.signal-score');
+          const scoreBar = card.querySelector('.ai-score');
+          scoreElement.textContent = `${signal.score}/100`;
+          scoreBar.style.setProperty('--percent', `${signal.score}%`);
+          
+          // Set risk management
+          card.querySelector('.signal-sl').textContent = `$${signal.risk.stopLoss.toFixed(2)}`;
+          card.querySelector('.signal-tp').textContent = `$${signal.risk.takeProfit.toFixed(2)}`;
+          card.querySelector('.signal-pos').textContent = signal.risk.positionSize;
+          
+          // Set validation
+          card.querySelector('.signal-validation').textContent = signal.validation;
+          
+          // Set TradingView link
+          const tradingViewBtn = card.querySelector('.signal-tradingview');
+          tradingViewBtn.href = signal.tradingViewUrl;
+          
+          // Set news button
+          const newsBtn = card.querySelector('.signal-news');
+          if (signal.news && signal.news.length > 0) {
+            newsBtn.innerHTML = `<i class="fas fa-newspaper mr-1"></i> News (${signal.news.length})`;
+            newsBtn.addEventListener('click', () => this.showNewsModal(signal));
+          } else {
+            newsBtn.innerHTML = '<i class="fas fa-newspaper mr-1"></i> No news';
+            newsBtn.classList.add('opacity-50');
+            newsBtn.disabled = true;
+          }
+          
+          container.appendChild(card);
+        });
       }
 
-      updateTimestamp(data) {
-        if (data && data[0]?.lastUpdated) {
-          document.getElementById('lastUpdate').textContent = 
-            new Date(data[0].lastUpdated).toLocaleTimeString();
+      showNewsModal(signal) {
+        const modal = document.getElementById('news-modal');
+        const title = document.querySelector('.modal-title');
+        const content = document.querySelector('.modal-content');
+        
+        title.textContent = `News for ${signal.symbol}`;
+        content.innerHTML = '';
+        
+        if (signal.news && signal.news.length > 0) {
+          signal.news.forEach(item => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'mb-4 pb-4 border-b last:border-0';
+            newsItem.innerHTML = `
+              <a href="${item.url}" target="_blank" class="text-blue-600 hover:underline font-medium">${item.title}</a>
+              <p class="text-sm text-gray-500 mt-1">${item.time}</p>`;
+            content.appendChild(newsItem);
+          });
+        } else {
+          content.innerHTML = '<p class="text-gray-500">No news available</p>';
         }
+        
+        modal.classList.remove('hidden');
       }
 
       showError() {
-        ['cryptoTable', 'stocksTable'].forEach(id => {
-          document.getElementById(id).innerHTML = `
-            <div class="p-4 text-center text-red-500">
-              <i class="fas fa-exclamation-triangle mr-2"></i>
-              Failed to load data. Please try again.
-            </div>`;
-        });
+        const container = document.getElementById('signals-container');
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12 text-red-500">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <p>Failed to load data. Please try refreshing.</p>
+          </div>`;
       }
     }
 
