@@ -55,21 +55,38 @@ async function runScan() {
   try {
     const results = { crypto: [], stocks: [] };
 
-    for (const type of ['crypto', 'stocks']) {
-      results[type] = (await Promise.all(
-        ASSETS[type].map(symbol => analyzeAsset(symbol, type))
-      ).filter(Boolean);
+    // Process crypto assets
+    results.crypto = (await Promise.all(
+      ASSETS.crypto.map(symbol => analyzeAsset(symbol, 'crypto'))
+    )).filter(Boolean);
 
-      if (results[type].length > 0) {
-        fs.writeFileSync(
-          `data/${type}.json`,
-          JSON.stringify({
-            lastUpdated: new Date().toISOString(),
-            data: results[type]
-          }, null, 2)
-        );
-      }
+    // Process stocks
+    results.stocks = (await Promise.all(
+      ASSETS.stocks.map(symbol => analyzeAsset(symbol, 'stocks'))
+    )).filter(Boolean);
+
+    // Save results
+    if (results.crypto.length > 0) {
+      fs.writeFileSync(
+        'data/crypto.json',
+        JSON.stringify({
+          lastUpdated: new Date().toISOString(),
+          data: results.crypto
+        }, null, 2)
+      );
     }
+
+    if (results.stocks.length > 0) {
+      fs.writeFileSync(
+        'data/stocks.json',
+        JSON.stringify({
+          lastUpdated: new Date().toISOString(),
+          data: results.stocks
+        }, null, 2)
+      );
+    }
+
+    console.log('Scan completed successfully');
   } catch (error) {
     console.error('Scan failed:', error);
   }
