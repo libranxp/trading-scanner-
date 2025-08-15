@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # Critical for pushing changes
+  contents: write  # This is absolutely critical
 
 jobs:
   scan:
@@ -13,8 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # These 3 lines are the magic fix:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0  # Fetches full history
+          persist-credentials: true
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -27,18 +29,17 @@ jobs:
       - name: Run scanner
         run: node fetch.js
 
-      - name: Commit and Push
+      - name: Commit and push changes
         run: |
-          # Configure Git
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          
-          # Check for changes
           git add data/
-          if git diff-index --quiet HEAD --; then
+          
+          # Only commit if changes exist
+          if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit"
           else
             git commit -m "Automatic scan update [skip ci]"
-            git pull --rebase  # Prevent divergence
-            git push origin HEAD:main
+            git pull --rebase
+            git push
           fi
