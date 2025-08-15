@@ -6,14 +6,23 @@
   <title>AI Trading Scanner</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .asset-card {
+      transition: all 0.2s ease;
+    }
+    .asset-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 <body class="bg-gray-50">
   <div class="container mx-auto px-4 py-8">
-    <header class="mb-8">
+    <header class="mb-8 text-center">
       <h1 class="text-3xl font-bold text-gray-800">
-        <i class="fas fa-robot text-blue-500 mr-2"></i> Trading Scanner
+        <i class="fas fa-robot text-blue-500 mr-2"></i> AI Trading Scanner
       </h1>
-      <div class="mt-4 flex items-center space-x-4">
+      <div class="mt-4 flex justify-center items-center space-x-4">
         <button id="refreshBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
           <i class="fas fa-sync-alt mr-2"></i> Refresh Data
         </button>
@@ -24,20 +33,24 @@
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold mb-4">
-          <i class="fab fa-bitcoin text-yellow-500 mr-2"></i> Cryptocurrencies
-        </h2>
-        <div id="cryptoTable" class="space-y-3">
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="p-4 bg-gray-50 border-b">
+          <h2 class="text-xl font-semibold">
+            <i class="fab fa-bitcoin text-yellow-500 mr-2"></i> Cryptocurrencies
+          </h2>
+        </div>
+        <div id="cryptoTable" class="divide-y divide-gray-100">
           <!-- Filled by JavaScript -->
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold mb-4">
-          <i class="fas fa-chart-line text-blue-500 mr-2"></i> Stocks
-        </h2>
-        <div id="stocksTable" class="space-y-3">
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="p-4 bg-gray-50 border-b">
+          <h2 class="text-xl font-semibold">
+            <i class="fas fa-chart-line text-blue-500 mr-2"></i> Stocks
+          </h2>
+        </div>
+        <div id="stocksTable" class="divide-y divide-gray-100">
           <!-- Filled by JavaScript -->
         </div>
       </div>
@@ -45,7 +58,7 @@
   </div>
 
   <script>
-    class TradingDashboard {
+    class Dashboard {
       constructor() {
         this.init();
       }
@@ -56,20 +69,26 @@
       }
 
       setupEventListeners() {
-        document.getElementById('refreshBtn').addEventListener('click', () => {
-          this.loadData();
+        document.getElementById('refreshBtn').addEventListener('click', async () => {
+          const btn = document.getElementById('refreshBtn');
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Refreshing...';
+          btn.disabled = true;
+          
+          await this.loadData();
+          
+          btn.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
+          btn.disabled = false;
         });
       }
 
       async loadData() {
         try {
-          document.getElementById('refreshBtn').innerHTML = 
-            '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-
           const [cryptoRes, stocksRes] = await Promise.all([
             fetch('data/crypto.json'),
             fetch('data/stocks.json')
           ]);
+
+          if (!cryptoRes.ok || !stocksRes.ok) throw new Error('Failed to fetch data');
 
           const cryptoData = await cryptoRes.json();
           const stocksData = await stocksRes.json();
@@ -81,35 +100,42 @@
             new Date(cryptoData.lastUpdated).toLocaleTimeString();
 
         } catch (error) {
-          console.error('Failed to load data:', error);
-        } finally {
-          document.getElementById('refreshBtn').innerHTML = 
-            '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
+          console.error('Error:', error);
+          document.getElementById('cryptoTable').innerHTML = 
+            '<div class="p-4 text-red-500">Failed to load data</div>';
         }
       }
 
-      renderTable(containerId, data) {
+      renderTable(containerId, assets) {
         const container = document.getElementById(containerId);
-        container.innerHTML = data.map(item => `
-          <div class="p-3 border rounded-lg hover:bg-gray-50">
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="font-medium">${item.symbol}</span>
-                <span class="text-gray-500 ml-2">$${item.price.toFixed(2)}</span>
+        container.innerHTML = assets.length > 0 
+          ? assets.map(asset => `
+              <div class="asset-card p-4 hover:bg-gray-50 cursor-pointer">
+                <div class="flex justify-between items-center">
+                  <div class="font-medium">${asset.symbol}</div>
+                  <div class="text-lg font-bold">$${asset.price.toFixed(2)}</div>
+                </div>
+                <div class="mt-2 grid grid-cols-3 gap-2 text-sm">
+                  <div class="text-center ${asset.rsi > 70 ? 'text-red-500' : asset.rsi < 30 ? 'text-green-500' : ''}">
+                    <div>RSI</div>
+                    <div class="font-medium">${asset.rsi.toFixed(1)}</div>
+                  </div>
+                  <div class="text-center">
+                    <div>EMA(9)</div>
+                    <div class="font-medium">$${asset.ema9.toFixed(2)}</div>
+                  </div>
+                  <div class="text-center">
+                    <div>EMA(21)</div>
+                    <div class="font-medium">$${asset.ema21.toFixed(2)}</div>
+                  </div>
+                </div>
               </div>
-              <div class="text-sm ${item.rsi > 70 ? 'text-red-500' : item.rsi < 30 ? 'text-green-500' : 'text-gray-500'}">
-                RSI: ${item.rsi.toFixed(1)}
-              </div>
-            </div>
-            <div class="mt-2 text-sm text-gray-500">
-              EMA(9): $${item.ema9.toFixed(2)} | EMA(21): $${item.ema21.toFixed(2)}
-            </div>
-          </div>
-        `).join('');
+            `).join('')
+          : '<div class="p-4 text-gray-500">No data available</div>';
       }
     }
 
-    new TradingDashboard();
+    document.addEventListener('DOMContentLoaded', () => new Dashboard());
   </script>
 </body>
 </html>
