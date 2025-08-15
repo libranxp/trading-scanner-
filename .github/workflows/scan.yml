@@ -12,23 +12,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # Removed cache: npm since we're not using package-lock.json
 
       - name: Install dependencies
         run: |
-          # Install directly without creating package.json
-          npm install axios technicalindicators cheerio mathjs --no-package-lock --no-save
-          
+          npm install axios technicalindicators cheerio mathjs
+          rm -rf package*.json
+
+      - name: Create data directory
+        run: mkdir -p data
+
       - name: Run scanner
         run: node fetch.js
+
+      - name: Verify data files
+        run: |
+          ls -la data/
+          [ -s data/crypto.json ] || echo "Crypto data empty"
+          [ -s data/stocks.json ] || echo "Stocks data empty"
 
       - name: Commit changes
         run: |
