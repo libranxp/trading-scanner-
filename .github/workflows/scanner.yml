@@ -2,7 +2,7 @@ name: AI Trading Scanner
 on:
   schedule:
     - cron: '*/10 7-20 * * *'  # Every 10 min 08:00-21:00 BST
-  workflow_dispatch:            # Manual triggers
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -20,9 +20,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install axios technicalindicators cheerio mathjs
+        run: |
+          npm install axios technicalindicators cheerio mathjs
+          rm -rf package*.json  # Remove these to prevent git tracking
           
       - name: Run scanner
         run: node fetch.js
@@ -32,8 +35,10 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add data/
-          if [ -n "$(git status --porcelain)" ]; then
+          if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
             git commit -m "Automatic scan update [skip ci]"
             git pull --rebase
             git push
+          else
+            echo "No changes to commit"
           fi
