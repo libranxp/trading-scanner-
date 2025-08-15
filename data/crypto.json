@@ -1,405 +1,405 @@
 {
-  "lastUpdated": "2025-08-15T18:17:48.103Z",
+  "lastUpdated": "2025-08-15T18:46:36.160Z",
   "data": [
     {
       "symbol": "BTC",
-      "price": 117443,
-      "change24h": -0.24113,
-      "volume": 48109255188,
+      "price": 117334,
+      "change24h": -0.60839,
+      "volume": 47670350642,
       "rsi": 37.44,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.158Z"
     },
     {
       "symbol": "ETH",
-      "price": 4431.29,
-      "change24h": -2.03339,
-      "volume": 49361232335,
+      "price": 4406.2,
+      "change24h": -3.21384,
+      "volume": 48043365741,
       "rsi": 29.67,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "XRP",
-      "price": 3.06,
-      "change24h": -0.24238,
-      "volume": 7035326748,
+      "price": 3.07,
+      "change24h": -0.43119,
+      "volume": 7020041018,
       "rsi": 36.13,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "USDT",
       "price": 1.001,
-      "change24h": 0.01716,
-      "volume": 121190763965,
+      "change24h": 0.01962,
+      "volume": 119451312241,
       "rsi": 53.18,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "BNB",
-      "price": 824.66,
-      "change24h": -0.88923,
-      "volume": 3860285328,
+      "price": 822.81,
+      "change24h": -1.94928,
+      "volume": 3799659019,
       "rsi": 36.35,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "SOL",
-      "price": 185.36,
-      "change24h": -3.88792,
-      "volume": 8955531778,
+      "price": 184.73,
+      "change24h": -4.83893,
+      "volume": 8894564077,
       "rsi": 28.7,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "USDC",
-      "price": 0.999846,
-      "change24h": 0.01385,
-      "volume": 20318819305,
+      "price": 0.999896,
+      "change24h": 0.01431,
+      "volume": 14911235963,
       "rsi": 55.52,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "STETH",
-      "price": 4420.84,
-      "change24h": -2.14493,
-      "volume": 87520738,
+      "price": 4393.3,
+      "change24h": -3.27516,
+      "volume": 84651060,
       "rsi": 36.12,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "ADA",
-      "price": 0.942504,
-      "change24h": 4.60837,
-      "volume": 4307820788,
+      "price": 0.939595,
+      "change24h": 3.96878,
+      "volume": 4244762082,
       "rsi": 62.23,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "DOGE",
-      "price": 0.224053,
-      "change24h": 0.74357,
-      "volume": 3380159146,
+      "price": 0.223474,
+      "change24h": -0.31567,
+      "volume": 3333504340,
       "rsi": 46.75,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "TRX",
-      "price": 0.351037,
-      "change24h": -1.95393,
-      "volume": 1932067608,
+      "price": 0.35063,
+      "change24h": -2.2172,
+      "volume": 1907869783,
       "rsi": 33.73,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "WSTETH",
-      "price": 5317.27,
-      "change24h": -2.90621,
-      "volume": 64978816,
+      "price": 5340.37,
+      "change24h": -2.70973,
+      "volume": 63340307,
       "rsi": 32.28,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "HYPE",
-      "price": 46.54,
-      "change24h": 2.99709,
-      "volume": 503999816,
+      "price": 46.19,
+      "change24h": 1.42941,
+      "volume": 497169486,
       "rsi": 50.8,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "WBTC",
-      "price": 117585,
-      "change24h": -0.16166,
-      "volume": 267886655,
+      "price": 117341,
+      "change24h": -0.57866,
+      "volume": 257046850,
       "rsi": 45.25,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "LINK",
-      "price": 21.69,
-      "change24h": -2.64694,
-      "volume": 1298288618,
+      "price": 21.61,
+      "change24h": -3.69817,
+      "volume": 1277128013,
       "rsi": 37.83,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "WBETH",
-      "price": 4781.23,
-      "change24h": -1.8416,
-      "volume": 24379368,
+      "price": 4745.72,
+      "change24h": -2.83698,
+      "volume": 25124660,
       "rsi": 37.11,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "XLM",
-      "price": 0.422668,
-      "change24h": 0.28604,
-      "volume": 423535332,
+      "price": 0.422906,
+      "change24h": -0.43815,
+      "volume": 424905184,
       "rsi": 41.8,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "SUI",
-      "price": 3.69,
-      "change24h": -1.73488,
-      "volume": 2374549165,
+      "price": 3.68,
+      "change24h": -2.18341,
+      "volume": 1666638898,
       "rsi": 42.05,
-      "lastUpdated": "2025-08-15T18:17:48.101Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "WEETH",
-      "price": 4752.88,
-      "change24h": -2.17456,
-      "volume": 25981265,
+      "price": 4733.8,
+      "change24h": -2.95843,
+      "volume": 25754958,
       "rsi": 37.07,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "BCH",
-      "price": 590.1,
-      "change24h": 0.29664,
-      "volume": 214678066,
+      "price": 591.54,
+      "change24h": 0.20127,
+      "volume": 213722521,
       "rsi": 47.61,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "USDE",
       "price": 1.001,
-      "change24h": 0.05815,
-      "volume": 433361210,
+      "change24h": -0.01436,
+      "volume": 432423754,
       "rsi": 56.37,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "HBAR",
-      "price": 0.245196,
-      "change24h": -1.21734,
-      "volume": 397359231,
+      "price": 0.244656,
+      "change24h": -1.73353,
+      "volume": 394009070,
       "rsi": 35.62,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "AVAX",
-      "price": 24.04,
-      "change24h": 1.68953,
-      "volume": 1456831873,
+      "price": 23.87,
+      "change24h": 0.66875,
+      "volume": 1455391453,
       "rsi": 52.87,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "WETH",
-      "price": 4433.78,
-      "change24h": -2.35858,
-      "volume": 88296040,
+      "price": 4409.47,
+      "change24h": -3.15097,
+      "volume": 651658242,
       "rsi": 31.04,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "LTC",
-      "price": 118.61,
-      "change24h": -1.64271,
-      "volume": 1004619017,
+      "price": 118.15,
+      "change24h": -2.64459,
+      "volume": 983606586,
       "rsi": 33.22,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "LEO",
       "price": 9.49,
-      "change24h": 2.32065,
-      "volume": 12913355,
+      "change24h": 2.26338,
+      "volume": 12892580,
       "rsi": 69.32,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "TON",
       "price": 3.4,
-      "change24h": 0.14743,
-      "volume": 220592482,
+      "change24h": -0.30131,
+      "volume": 291032964,
       "rsi": 44.88,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "USDS",
-      "price": 0.99926,
-      "change24h": -0.04117,
-      "volume": 29246661,
+      "price": 0.999299,
+      "change24h": -0.00803,
+      "volume": 31008712,
       "rsi": 48.74,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "SHIB",
-      "price": 0.00001276,
-      "change24h": -0.45295,
-      "volume": 305805870,
+      "price": 0.00001274,
+      "change24h": -0.97157,
+      "volume": 303251172,
       "rsi": 37.92,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "BSC-USD",
-      "price": 1.002,
-      "change24h": 0.37638,
-      "volume": 2209749512,
+      "price": 1,
+      "change24h": -0.02457,
+      "volume": 1997530572,
       "rsi": 53.09,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "WBT",
-      "price": 44.88,
-      "change24h": -0.7024,
-      "volume": 60085019,
+      "price": 44.83,
+      "change24h": -1.33532,
+      "volume": 58783933,
       "rsi": 36.84,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "UNI",
-      "price": 10.62,
-      "change24h": -2.28381,
-      "volume": 753829960,
+      "price": 10.61,
+      "change24h": -2.90679,
+      "volume": 742015859,
       "rsi": 36.71,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "CBBTC",
-      "price": 117393,
-      "change24h": -0.49738,
-      "volume": 553655126,
+      "price": 117356,
+      "change24h": -0.64401,
+      "volume": 542642114,
       "rsi": 40.66,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "DOT",
       "price": 3.87,
-      "change24h": -2.77821,
-      "volume": 413522540,
+      "change24h": -3.26021,
+      "volume": 412607772,
       "rsi": 35.79,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "SUSDE",
       "price": 1.19,
-      "change24h": 0.03938,
-      "volume": 52186020,
+      "change24h": 0.03029,
+      "volume": 52232836,
       "rsi": 55.09,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.159Z"
     },
     {
       "symbol": "BGB",
       "price": 4.57,
-      "change24h": 0.61148,
-      "volume": 220408948,
+      "change24h": 0.59314,
+      "volume": 219868590,
       "rsi": 50.82,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "CRO",
-      "price": 0.150336,
-      "change24h": -0.64162,
-      "volume": 31242724,
+      "price": 0.150198,
+      "change24h": -1.31663,
+      "volume": 31076006,
       "rsi": 40.9,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "ENA",
-      "price": 0.694008,
-      "change24h": -4.31884,
-      "volume": 1267152709,
+      "price": 0.692209,
+      "change24h": -5.75292,
+      "volume": 1255732288,
       "rsi": 35.09,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "PEPE",
-      "price": 0.00001076,
-      "change24h": -2.57041,
-      "volume": 1522897060,
+      "price": 0.00001075,
+      "change24h": -3.12655,
+      "volume": 1505194916,
       "rsi": 34.93,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "AAVE",
-      "price": 297.38,
-      "change24h": -3.99952,
-      "volume": 647604146,
+      "price": 297.01,
+      "change24h": -4.65954,
+      "volume": 642208210,
       "rsi": 31.71,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "XMR",
-      "price": 236.56,
-      "change24h": -4.32952,
-      "volume": 52475998,
+      "price": 236.13,
+      "change24h": -4.33967,
+      "volume": 51355730,
       "rsi": 30.8,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "DAI",
-      "price": 1,
-      "change24h": 0.03355,
-      "volume": 179429143,
+      "price": 0.999977,
+      "change24h": 0.01853,
+      "volume": 182474606,
       "rsi": 54.03,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "MNT",
       "price": 1.18,
-      "change24h": 7.75316,
-      "volume": 273886566,
+      "change24h": 6.67437,
+      "volume": 273842141,
       "rsi": 66.33,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "TAO",
-      "price": 364.92,
-      "change24h": -0.49013,
-      "volume": 129005883,
+      "price": 363.57,
+      "change24h": -1.16816,
+      "volume": 126887721,
       "rsi": 43.55,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "ETC",
-      "price": 21.98,
-      "change24h": -0.77535,
-      "volume": 244578540,
+      "price": 21.95,
+      "change24h": -1.46892,
+      "volume": 240133002,
       "rsi": 41.67,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "NEAR",
-      "price": 2.69,
-      "change24h": -3.20074,
-      "volume": 262495556,
+      "price": 2.68,
+      "change24h": -3.88502,
+      "volume": 257126124,
       "rsi": 39.6,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "APT",
-      "price": 4.61,
-      "change24h": -2.61989,
-      "volume": 556858216,
+      "price": 4.59,
+      "change24h": -3.64777,
+      "volume": 553144219,
       "rsi": 36.53,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "ONDO",
-      "price": 0.976892,
-      "change24h": -1.57508,
-      "volume": 193300861,
+      "price": 0.972532,
+      "change24h": -2.78584,
+      "volume": 191839095,
       "rsi": 36.95,
-      "lastUpdated": "2025-08-15T18:17:48.102Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "PI",
-      "price": 0.381852,
-      "change24h": 0.92262,
-      "volume": 78078924,
-      "rsi": 41.26,
-      "lastUpdated": "2025-08-15T18:17:48.103Z"
+      "price": 0.381725,
+      "change24h": 0.14416,
+      "volume": 75743260,
+      "rsi": 50.03,
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     },
     {
       "symbol": "ICP",
-      "price": 5.32,
-      "change24h": -3.871,
-      "volume": 79572754,
+      "price": 5.31,
+      "change24h": -3.96763,
+      "volume": 74495560,
       "rsi": 27.47,
-      "lastUpdated": "2025-08-15T18:17:48.103Z"
+      "lastUpdated": "2025-08-15T18:46:36.160Z"
     }
   ]
 }
