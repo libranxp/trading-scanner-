@@ -1,108 +1,350 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AI Trading Scanner</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Trading Scanner Pro</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
   <style>
-    .signal-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    .gauge-bg {
+      background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
     }
-    .gauge {
-      background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+    .signal-card {
+      transition: all 0.2s ease;
+    }
+    .signal-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
   </style>
 </head>
 <body class="bg-gray-50">
-  <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-6">AI Trading Scanner</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Crypto Signals -->
-      <div class="col-span-2">
-        <h2 class="text-xl font-semibold mb-4">Cryptocurrencies</h2>
-        <div id="crypto-signals" class="grid grid-cols-1 gap-4">
-          <!-- Filled by JavaScript -->
+  <div class="container mx-auto px-4 py-6">
+    <!-- Header -->
+    <header class="mb-8 flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-gray-800">
+        <i class="fas fa-robot text-blue-500 mr-2"></i> AI Trading Scanner Pro
+      </h1>
+      <div class="flex items-center space-x-4">
+        <button id="refresh-btn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+          <i class="fas fa-sync-alt mr-2"></i> Manual Scan
+        </button>
+        <div class="text-sm text-gray-500">
+          Last update: <span id="last-update">--:--</span>
         </div>
       </div>
-      
-      <!-- Sidebar -->
-      <div>
-        <div class="bg-white p-4 rounded-lg shadow mb-4">
-          <h3 class="font-bold mb-2">AI Score Legend</h3>
-          <div class="gauge h-2 w-full rounded-full mb-2"></div>
-          <div class="flex justify-between text-xs">
-            <span>0 (Low)</span>
-            <span>10 (High)</span>
-          </div>
+    </header>
+
+    <!-- Asset Toggle -->
+    <div class="flex mb-6 bg-gray-100 rounded-lg p-1 max-w-md">
+      <button class="asset-toggle active flex-1 py-2 px-4 rounded-md" data-type="crypto">
+        <i class="fab fa-bitcoin mr-2"></i> Cryptocurrencies
+      </button>
+      <button class="asset-toggle flex-1 py-2 px-4 rounded-md" data-type="stocks">
+        <i class="fas fa-chart-line mr-2"></i> Stocks
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Signals Table -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticker</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Technical</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AI Validation</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="signals-table" class="bg-white divide-y divide-gray-200">
+              <!-- Filled by JavaScript -->
+            </tbody>
+          </table>
         </div>
-        
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h3 class="font-bold mb-2">Recent Scans</h3>
-          <div id="scan-history"></div>
+      </div>
+
+      <!-- Detail Panel -->
+      <div class="bg-white rounded-xl shadow overflow-hidden" id="detail-panel">
+        <div class="p-4 border-b">
+          <h2 class="text-xl font-semibold flex justify-between">
+            <span id="detail-symbol">Select a symbol</span>
+            <button id="close-detail" class="text-gray-400 hover:text-gray-600">
+              <i class="fas fa-times"></i>
+            </button>
+          </h2>
+        </div>
+        <div class="p-4 space-y-4">
+          <!-- Chart -->
+          <div id="chart-container" class="h-64"></div>
+          
+          <!-- Risk Assessment -->
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <h3 class="font-medium mb-2"><i class="fas fa-shield-alt mr-2 text-blue-500"></i> Risk Assessment</h3>
+            <div class="grid grid-cols-3 gap-4 text-sm">
+              <div>
+                <div class="text-gray-500">Stop Loss</div>
+                <div id="stop-loss" class="font-medium">--</div>
+              </div>
+              <div>
+                <div class="text-gray-500">Take Profit</div>
+                <div id="take-profit" class="font-medium">--</div>
+              </div>
+              <div>
+                <div class="text-gray-500">Position Size</div>
+                <div id="position-size" class="font-medium">--</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- News -->
+          <div>
+            <h3 class="font-medium mb-2"><i class="fas fa-newspaper mr-2 text-blue-500"></i> Recent News</h3>
+            <div id="news-container" class="space-y-2">
+              <div class="text-gray-400">No news available</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    async function loadData() {
-      try {
-        const response = await fetch('data/crypto.json');
-        const { data, lastUpdated } = await response.json();
+    // Main App Controller
+    class TradingScanner {
+      constructor() {
+        this.currentType = 'crypto';
+        this.init();
+      }
+
+      async init() {
+        this.setupEventListeners();
+        await this.loadData();
+        this.startAutoRefresh();
+      }
+
+      setupEventListeners() {
+        // Asset type toggle
+        document.querySelectorAll('.asset-toggle').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelector('.asset-toggle.active').classList.remove('active');
+            btn.classList.add('active');
+            this.currentType = btn.dataset.type;
+            this.loadData();
+          });
+        });
+
+        // Manual refresh
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+          this.triggerManualScan();
+        });
+
+        // Close detail panel
+        document.getElementById('close-detail').addEventListener('click', () => {
+          document.getElementById('detail-panel').classList.add('hidden');
+        });
+      }
+
+      async loadData() {
+        try {
+          const response = await fetch(`data/${this.currentType}.json`);
+          const { lastUpdated, data } = await response.json();
+          
+          document.getElementById('last-update').textContent = 
+            new Date(lastUpdated).toLocaleTimeString();
+          
+          this.renderSignals(data);
+        } catch (error) {
+          console.error('Failed to load data:', error);
+        }
+      }
+
+      renderSignals(signals) {
+        const container = document.getElementById('signals-table');
+        container.innerHTML = signals.map(signal => `
+          <tr class="signal-card hover:bg-gray-50 cursor-pointer" data-symbol="${signal.symbol}">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
+                  ${signal.type === 'crypto' ? 
+                    '<i class="fab fa-bitcoin text-yellow-500"></i>' : 
+                    '<i class="fas fa-chart-line text-blue-500"></i>'}
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">${signal.symbol}</div>
+                  <div class="text-sm text-gray-500">${signal.name}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium ${signal.change24h >= 0 ? 'text-green-600' : 'text-red-600'}">
+                $${signal.price.toLocaleString(undefined, {maximumFractionDigits: 2})}
+              </div>
+              <div class="text-sm text-gray-500">
+                ${signal.change24h >= 0 ? '+' : ''}${signal.change24h.toFixed(2)}%
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm text-gray-900">RSI: ${signal.rsi.toFixed(1)}</div>
+              <div class="text-sm text-gray-500">Vol: $${(signal.volume / 1000000).toFixed(1)}M</div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm text-gray-900">${signal.aiValidation || 'No significant pattern'}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <a href="${signal.tradingViewUrl}" target="_blank" class="text-blue-500 hover:text-blue-700 mr-3">
+                <i class="fas fa-chart-line"></i>
+              </a>
+              <button class="text-blue-500 hover:text-blue-700 detail-btn" data-symbol="${signal.symbol}">
+                <i class="fas fa-info-circle"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+
+        // Add click handlers
+        document.querySelectorAll('.detail-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.showDetail(btn.dataset.symbol);
+          });
+        });
+
+        document.querySelectorAll('.signal-card').forEach(row => {
+          row.addEventListener('click', () => {
+            this.showDetail(row.dataset.symbol);
+          });
+        });
+      }
+
+      async showDetail(symbol) {
+        const response = await fetch(`data/${this.currentType}.json`);
+        const { data } = await response.json();
+        const signal = data.find(s => s.symbol === symbol);
+
+        if (!signal) return;
+
+        // Update detail panel
+        document.getElementById('detail-panel').classList.remove('hidden');
+        document.getElementById('detail-symbol').textContent = 
+          `${signal.symbol} - ${signal.name}`;
         
-        document.getElementById('scan-history').innerHTML = `
-          Last scan: ${new Date(lastUpdated).toLocaleString()}
-        `;
+        // Risk assessment
+        document.getElementById('stop-loss').textContent = 
+          `$${signal.risk.stopLoss.toFixed(2)}`;
+        document.getElementById('take-profit').textContent = 
+          `$${signal.risk.takeProfit.toFixed(2)}`;
+        document.getElementById('position-size').textContent = 
+          signal.risk.positionSize;
+
+        // News
+        const newsContainer = document.getElementById('news-container');
+        if (signal.news && signal.news.length > 0) {
+          newsContainer.innerHTML = signal.news.map(item => `
+            <div class="border-b pb-2 last:border-0">
+              <a href="${item.url}" target="_blank" class="text-blue-500 hover:underline">${item.title}</a>
+              <div class="text-xs text-gray-400">${item.time}</div>
+            </div>
+          `).join('');
+        } else {
+          newsContainer.innerHTML = '<div class="text-gray-400">No news available</div>';
+        }
+
+        // Render chart
+        this.renderChart(signal);
+      }
+
+      renderChart(signal) {
+        const chartContainer = document.getElementById('chart-container');
+        chartContainer.innerHTML = ''; // Clear previous chart
         
-        renderSignals(data);
-      } catch (error) {
-        console.error('Failed to load data:', error);
+        const chart = LightweightCharts.createChart(chartContainer, {
+          width: chartContainer.clientWidth,
+          height: 300,
+          layout: {
+            backgroundColor: '#ffffff',
+            textColor: '#333',
+          },
+          grid: {
+            vertLines: {
+              color: 'rgba(197, 203, 206, 0.3)',
+            },
+            horzLines: {
+              color: 'rgba(197, 203, 206, 0.3)',
+            },
+          },
+          crosshair: {
+            mode: LightweightCharts.CrosshairMode.Normal,
+          },
+          rightPriceScale: {
+            borderColor: 'rgba(197, 203, 206, 0.3)',
+          },
+          timeScale: {
+            borderColor: 'rgba(197, 203, 206, 0.3)',
+          },
+        });
+
+        const candleSeries = chart.addCandlestickSeries({
+          upColor: '#26a69a',
+          downColor: '#ef5350',
+          borderVisible: false,
+          wickUpColor: '#26a69a',
+          wickDownColor: '#ef5350',
+        });
+
+        // Simplified chart data - in a real app you'd fetch historical data
+        const now = Math.floor(Date.now() / 1000);
+        const chartData = [];
+        for (let i = 30; i >= 0; i--) {
+          const basePrice = signal.price * (1 - (signal.change24h / 100));
+          const priceDiff = signal.price - basePrice;
+          const step = priceDiff / 30;
+          
+          chartData.push({
+            time: now - (i * 86400),
+            open: basePrice + (step * i * 0.9),
+            high: basePrice + (step * i * 1.1),
+            low: basePrice + (step * i * 0.8),
+            close: basePrice + (step * i)
+          });
+        }
+
+        candleSeries.setData(chartData);
+        chart.timeScale().fitContent();
+      }
+
+      startAutoRefresh() {
+        setInterval(() => {
+          this.loadData();
+        }, 60000); // Refresh every 60 seconds
+      }
+
+      async triggerManualScan() {
+        try {
+          document.getElementById('refresh-btn').innerHTML = 
+            '<i class="fas fa-spinner fa-spin mr-2"></i> Scanning...';
+          
+          // In a real implementation, you'd trigger a GitHub Actions workflow run via API
+          // For GitHub-only solution, we just force a data reload
+          await this.loadData();
+          
+          document.getElementById('refresh-btn').innerHTML = 
+            '<i class="fas fa-sync-alt mr-2"></i> Manual Scan';
+        } catch (error) {
+          console.error('Manual scan failed:', error);
+        }
       }
     }
-    
-    function renderSignals(signals) {
-      const container = document.getElementById('crypto-signals');
-      
-      container.innerHTML = signals.map(signal => `
-        <div class="signal-card bg-white p-4 rounded-lg shadow transition">
-          <div class="flex justify-between items-start">
-            <div>
-              <h3 class="font-bold">${signal.symbol}</h3>
-              <p class="text-gray-500">$${signal.price.toLocaleString()}</p>
-            </div>
-            <span class="${signal.change24h >= 0 ? 'text-green-500' : 'text-red-500'}">
-              ${signal.change24h >= 0 ? '+' : ''}${signal.change24h.toFixed(2)}%
-            </span>
-          </div>
-          
-          <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
-            <div>
-              <div class="text-gray-500">Volume</div>
-              <div>$${(signal.volume / 1000000).toFixed(1)}M</div>
-            </div>
-            <div>
-              <div class="text-gray-500">RSI</div>
-              <div>${signal.rsi.toFixed(1)}</div>
-            </div>
-            <div>
-              <div class="text-gray-500">AI Score</div>
-              <div class="flex items-center">
-                <div class="gauge h-1 w-12 mr-2 rounded-full">
-                  <div class="h-full bg-blue-500 rounded-full" 
-                       style="width: ${(signal.rsi / 100) * 100}%"></div>
-                </div>
-                ${(signal.rsi / 14).toFixed(1)}
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-    
-    // Refresh data every 60 seconds
-    loadData();
-    setInterval(loadData, 60000);
+
+    // Initialize when DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new TradingScanner();
+    });
   </script>
 </body>
 </html>
