@@ -8,87 +8,89 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     .asset-card {
-      transition: all 0.2s ease;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
     .asset-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+    .rsi-overbought { color: #ef4444; }
+    .rsi-oversold { color: #10b981; }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen">
   <div class="container mx-auto px-4 py-8">
     <header class="mb-8 text-center">
-      <h1 class="text-3xl font-bold text-gray-800">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">
         <i class="fas fa-robot text-blue-500 mr-2"></i> AI Trading Scanner
       </h1>
-      <div class="mt-4 flex justify-center items-center space-x-4">
-        <button id="refreshBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+      <div class="flex justify-center items-center space-x-4">
+        <button id="refreshBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">
           <i class="fas fa-sync-alt mr-2"></i> Refresh Data
         </button>
         <span class="text-sm text-gray-500">
-          Last update: <span id="lastUpdate">--:--</span>
+          Last update: <span id="lastUpdate" class="font-medium">--:--</span>
         </span>
       </div>
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 bg-gray-50 border-b">
-          <h2 class="text-xl font-semibold">
+        <div class="p-4 bg-blue-50 border-b">
+          <h2 class="text-xl font-semibold text-blue-800">
             <i class="fab fa-bitcoin text-yellow-500 mr-2"></i> Cryptocurrencies
           </h2>
         </div>
         <div id="cryptoTable" class="divide-y divide-gray-100">
-          <!-- Filled by JavaScript -->
+          <!-- Dynamic content -->
         </div>
       </div>
 
       <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-4 bg-gray-50 border-b">
-          <h2 class="text-xl font-semibold">
+        <div class="p-4 bg-blue-50 border-b">
+          <h2 class="text-xl font-semibold text-blue-800">
             <i class="fas fa-chart-line text-blue-500 mr-2"></i> Stocks
           </h2>
         </div>
         <div id="stocksTable" class="divide-y divide-gray-100">
-          <!-- Filled by JavaScript -->
+          <!-- Dynamic content -->
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    class Dashboard {
+    class TradingDashboard {
       constructor() {
         this.init();
       }
 
-      async init() {
+      init() {
         this.setupEventListeners();
-        await this.loadData();
+        this.loadData();
       }
 
       setupEventListeners() {
-        document.getElementById('refreshBtn').addEventListener('click', async () => {
+        document.getElementById('refreshBtn').addEventListener('click', () => {
           const btn = document.getElementById('refreshBtn');
-          btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Refreshing...';
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
           btn.disabled = true;
           
-          await this.loadData();
-          
-          btn.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
-          btn.disabled = false;
+          this.loadData().finally(() => {
+            btn.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
+            btn.disabled = false;
+          });
         });
       }
 
       async loadData() {
         try {
           const [cryptoRes, stocksRes] = await Promise.all([
-            fetch('data/crypto.json'),
-            fetch('data/stocks.json')
+            fetch('data/crypto.json?t=' + Date.now()),
+            fetch('data/stocks.json?t=' + Date.now())
           ]);
 
-          if (!cryptoRes.ok || !stocksRes.ok) throw new Error('Failed to fetch data');
+          if (!cryptoRes.ok || !stocksRes.ok) throw new Error('Data fetch failed');
 
           const cryptoData = await cryptoRes.json();
           const stocksData = await stocksRes.json();
@@ -98,44 +100,60 @@
 
           document.getElementById('lastUpdate').textContent = 
             new Date(cryptoData.lastUpdated).toLocaleTimeString();
-
         } catch (error) {
           console.error('Error:', error);
-          document.getElementById('cryptoTable').innerHTML = 
-            '<div class="p-4 text-red-500">Failed to load data</div>';
+          this.showError();
         }
       }
 
       renderTable(containerId, assets) {
         const container = document.getElementById(containerId);
-        container.innerHTML = assets.length > 0 
-          ? assets.map(asset => `
-              <div class="asset-card p-4 hover:bg-gray-50 cursor-pointer">
-                <div class="flex justify-between items-center">
-                  <div class="font-medium">${asset.symbol}</div>
-                  <div class="text-lg font-bold">$${asset.price.toFixed(2)}</div>
-                </div>
-                <div class="mt-2 grid grid-cols-3 gap-2 text-sm">
-                  <div class="text-center ${asset.rsi > 70 ? 'text-red-500' : asset.rsi < 30 ? 'text-green-500' : ''}">
-                    <div>RSI</div>
-                    <div class="font-medium">${asset.rsi.toFixed(1)}</div>
-                  </div>
-                  <div class="text-center">
-                    <div>EMA(9)</div>
-                    <div class="font-medium">$${asset.ema9.toFixed(2)}</div>
-                  </div>
-                  <div class="text-center">
-                    <div>EMA(21)</div>
-                    <div class="font-medium">$${asset.ema21.toFixed(2)}</div>
-                  </div>
-                </div>
+        
+        if (!assets || assets.length === 0) {
+          container.innerHTML = `
+            <div class="p-4 text-center text-gray-500">
+              No data available
+            </div>`;
+          return;
+        }
+
+        container.innerHTML = assets.map(asset => `
+          <div class="asset-card p-4 hover:bg-gray-50">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-bold text-lg">${asset.symbol}</span>
+              <span class="text-xl font-bold">$${asset.price.toFixed(2)}</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-sm">
+              <div class="text-center ${asset.rsi > 70 ? 'rsi-overbought' : asset.rsi < 30 ? 'rsi-oversold' : ''}">
+                <div class="font-medium">RSI</div>
+                <div>${asset.rsi.toFixed(1)}</div>
               </div>
-            `).join('')
-          : '<div class="p-4 text-gray-500">No data available</div>';
+              <div class="text-center">
+                <div class="font-medium">EMA(9)</div>
+                <div>$${asset.ema9.toFixed(2)}</div>
+              </div>
+              <div class="text-center">
+                <div class="font-medium">EMA(21)</div>
+                <div>$${asset.ema21.toFixed(2)}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      showError() {
+        const containers = ['cryptoTable', 'stocksTable'];
+        containers.forEach(id => {
+          document.getElementById(id).innerHTML = `
+            <div class="p-4 text-center text-red-500">
+              <i class="fas fa-exclamation-triangle mr-2"></i>
+              Failed to load data
+            </div>`;
+        });
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => new Dashboard());
+    document.addEventListener('DOMContentLoaded', () => new TradingDashboard());
   </script>
 </body>
 </html>
