@@ -1,11 +1,11 @@
-name: Trading Scanner
+name: AI Trading Scanner
 on:
   schedule:
     - cron: '*/10 7-20 * * *'  # Every 10 min 08:00-21:00 BST
-  workflow_dispatch:
+  workflow_dispatch:  # Enable manual triggers
 
 permissions:
-  contents: write  # This is absolutely critical
+  contents: write
 
 jobs:
   scan:
@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # These 3 lines are the magic fix:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
           fetch-depth: 0
@@ -22,23 +21,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
-      - name: Install dependencies
-        run: npm install axios technicalindicators
 
+      - name: Install dependencies
+        run: |
+          npm install axios technicalindicators cheerio mathjs
+          
       - name: Run scanner
         run: node fetch.js
 
-      - name: Commit and push changes
+      - name: Commit changes
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add data/
-          
-          # Only commit if changes exist
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "No changes to commit"
-          else
+          if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Automatic scan update [skip ci]"
             git pull --rebase
             git push
