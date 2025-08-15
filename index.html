@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     .asset-card {
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.2s ease;
     }
     .asset-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     .rsi-overbought { color: #ef4444; }
     .rsi-oversold { color: #10b981; }
@@ -42,7 +42,9 @@
           </h2>
         </div>
         <div id="cryptoTable" class="divide-y divide-gray-100">
-          <!-- Dynamic content -->
+          <div class="p-4 text-center text-gray-500">
+            Loading data...
+          </div>
         </div>
       </div>
 
@@ -53,7 +55,9 @@
           </h2>
         </div>
         <div id="stocksTable" class="divide-y divide-gray-100">
-          <!-- Dynamic content -->
+          <div class="p-4 text-center text-gray-500">
+            Loading data...
+          </div>
         </div>
       </div>
     </div>
@@ -72,37 +76,42 @@
 
       setupEventListeners() {
         document.getElementById('refreshBtn').addEventListener('click', () => {
-          const btn = document.getElementById('refreshBtn');
-          btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...';
-          btn.disabled = true;
-          
-          this.loadData().finally(() => {
-            btn.innerHTML = '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
-            btn.disabled = false;
-          });
+          this.toggleLoading(true);
+          this.loadData();
         });
+      }
+
+      toggleLoading(isLoading) {
+        const btn = document.getElementById('refreshBtn');
+        btn.innerHTML = isLoading
+          ? '<i class="fas fa-spinner fa-spin mr-2"></i> Loading...'
+          : '<i class="fas fa-sync-alt mr-2"></i> Refresh Data';
+        btn.disabled = isLoading;
       }
 
       async loadData() {
         try {
+          const timestamp = new Date().getTime();
           const [cryptoRes, stocksRes] = await Promise.all([
-            fetch('data/crypto.json?t=' + Date.now()),
-            fetch('data/stocks.json?t=' + Date.now())
+            fetch(`data/crypto.json?t=${timestamp}`),
+            fetch(`data/stocks.json?t=${timestamp}`)
           ]);
 
-          if (!cryptoRes.ok || !stocksRes.ok) throw new Error('Data fetch failed');
+          if (!cryptoRes.ok || !stocksRes.ok) throw new Error('Network error');
 
-          const cryptoData = await cryptoRes.json();
-          const stocksData = await stocksRes.json();
+          const [cryptoData, stocksData] = await Promise.all([
+            cryptoRes.json(),
+            stocksRes.json()
+          ]);
 
-          this.renderTable('cryptoTable', cryptoData.data);
-          this.renderTable('stocksTable', stocksData.data);
-
-          document.getElementById('lastUpdate').textContent = 
-            new Date(cryptoData.lastUpdated).toLocaleTimeString();
+          this.renderTable('cryptoTable', cryptoData);
+          this.renderTable('stocksTable', stocksData);
+          this.updateTimestamp(cryptoData);
         } catch (error) {
-          console.error('Error:', error);
+          console.error('Failed to load data:', error);
           this.showError();
+        } finally {
+          this.toggleLoading(false);
         }
       }
 
@@ -111,7 +120,8 @@
         
         if (!assets || assets.length === 0) {
           container.innerHTML = `
-            <div class="p-4 text-center text-gray-500">
+            <div class="p-4 text-center text-yellow-600">
+              <i class="fas fa-exclamation-circle mr-2"></i>
               No data available
             </div>`;
           return;
@@ -120,7 +130,10 @@
         container.innerHTML = assets.map(asset => `
           <div class="asset-card p-4 hover:bg-gray-50">
             <div class="flex justify-between items-center mb-2">
-              <span class="font-bold text-lg">${asset.symbol}</span>
+              <div>
+                <span class="font-bold text-lg">${asset.symbol}</span>
+                <span class="text-sm text-gray-500 ml-2">${asset.name}</span>
+              </div>
               <span class="text-xl font-bold">$${asset.price.toFixed(2)}</span>
             </div>
             <div class="grid grid-cols-3 gap-2 text-sm">
@@ -141,13 +154,19 @@
         `).join('');
       }
 
+      updateTimestamp(data) {
+        if (data && data[0]?.lastUpdated) {
+          document.getElementById('lastUpdate').textContent = 
+            new Date(data[0].lastUpdated).toLocaleTimeString();
+        }
+      }
+
       showError() {
-        const containers = ['cryptoTable', 'stocksTable'];
-        containers.forEach(id => {
+        ['cryptoTable', 'stocksTable'].forEach(id => {
           document.getElementById(id).innerHTML = `
             <div class="p-4 text-center text-red-500">
               <i class="fas fa-exclamation-triangle mr-2"></i>
-              Failed to load data
+              Failed to load data. Please try again.
             </div>`;
         });
       }
