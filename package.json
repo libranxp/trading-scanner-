@@ -1,11 +1,19 @@
 {
   "name": "trading-scanner",
   "version": "1.0.0",
-  "private": true,
+  "description": "Advanced trading scanner dashboard",
+  "main": "fetch.js",
+  "scripts": {
+    "start": "node fetch.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
   "dependencies": {
     "axios": "^1.6.7",
     "technicalindicators": "^3.1.0",
     "cheerio": "^1.0.0-rc.12",
     "mathjs": "^12.2.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
