@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Trading Scanner Pro</title>
+  <title>Advanced Trading Scanner</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     .asset-card {
       transition: all 0.3s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .asset-card:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     .positive { color: #10B981; }
@@ -28,13 +28,32 @@
       50% { opacity: 0.5; }
       100% { opacity: 1; }
     }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-green {
+      background-color: #D1FAE5;
+      color: #065F46;
+    }
+    .badge-red {
+      background-color: #FEE2E2;
+      color: #B91C1C;
+    }
+    .badge-blue {
+      background-color: #DBEAFE;
+      color: #1E40AF;
+    }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
   <div class="container mx-auto px-4 py-8">
     <header class="mb-8">
       <h1 class="text-3xl font-bold text-gray-800 flex items-center">
-        <i class="fas fa-robot text-blue-500 mr-3"></i> AI Trading Scanner Pro
+        <i class="fas fa-robot text-blue-500 mr-3"></i> Advanced Trading Scanner
       </h1>
       <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
         <div class="flex space-x-2">
@@ -71,14 +90,14 @@
       </button>
     </div>
 
-    <div id="assets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
-      <!-- Asset cards will be inserted here -->
-    </div>
-
     <div id="no-data-message" class="hidden text-center py-12 bg-yellow-50 rounded-lg">
       <i class="fas fa-info-circle fa-2x text-yellow-500"></i>
-      <p class="mt-3 text-yellow-700 font-medium">No data available</p>
-      <p class="text-sm text-yellow-600 mt-1">The scanner may still be running</p>
+      <p class="mt-3 text-yellow-700 font-medium">No assets matching criteria</p>
+      <p class="text-sm text-yellow-600 mt-1">The scanner may update soon with new signals</p>
+    </div>
+
+    <div id="assets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+      <!-- Asset cards will be inserted here -->
     </div>
   </div>
 
@@ -94,8 +113,8 @@
             <i class="fas fa-chart-line text-blue-500"></i>
           </div>
           <div>
-            <h3 class="font-bold text-lg asset-symbol">BTC</h3>
-            <p class="text-sm text-gray-500 asset-name">Bitcoin</p>
+            <h3 class="font-bold text-lg asset-symbol">SYMBOL</h3>
+            <p class="text-sm text-gray-500 asset-name">Asset Name</p>
           </div>
         </div>
         <div class="text-right">
@@ -105,15 +124,6 @@
       </div>
       
       <div class="p-5">
-        <!-- AI Score -->
-        <div class="mb-4">
-          <div class="flex justify-between items-center mb-1">
-            <span class="text-sm font-medium text-gray-500">AI Confidence</span>
-            <span class="text-sm font-bold asset-score">-</span>
-          </div>
-          <div class="ai-score w-full h-2 rounded-full"></div>
-        </div>
-        
         <!-- Technical Indicators -->
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
@@ -121,22 +131,30 @@
             <p class="font-medium asset-rsi">-</p>
           </div>
           <div>
-            <p class="text-xs text-gray-500">Volume (24h)</p>
-            <p class="font-medium asset-volume">-</p>
+            <p class="text-xs text-gray-500">RVOL</p>
+            <p class="font-medium asset-rvol">-</p>
           </div>
           <div>
-            <p class="text-xs text-gray-500">EMA (9/21)</p>
+            <p class="text-xs text-gray-500">EMA 5/13/50</p>
             <p class="font-medium asset-ema">-</p>
           </div>
           <div>
-            <p class="text-xs text-gray-500">ATR (14)</p>
-            <p class="font-medium asset-atr">-</p>
+            <p class="text-xs text-gray-500">VWAP Diff</p>
+            <p class="font-medium asset-vwap">-</p>
           </div>
         </div>
         
         <!-- Risk Management -->
         <div class="bg-gray-50 p-3 rounded-lg mb-4">
-          <div class="grid grid-cols-3 gap-2 text-center">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <p class="text-xs text-gray-500">Entry Price</p>
+              <p class="text-sm font-bold asset-entry">-</p>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500">Exit Signal</p>
+              <p class="text-sm font-bold asset-exit">-</p>
+            </div>
             <div>
               <p class="text-xs text-gray-500">Stop Loss</p>
               <p class="text-sm font-bold asset-sl">-</p>
@@ -145,17 +163,23 @@
               <p class="text-xs text-gray-500">Take Profit</p>
               <p class="text-sm font-bold asset-tp">-</p>
             </div>
-            <div>
-              <p class="text-xs text-gray-500">Position</p>
-              <p class="text-sm font-bold asset-pos">-</p>
-            </div>
+          </div>
+          <div class="mt-2">
+            <p class="text-xs text-gray-500">Position Size</p>
+            <p class="text-sm font-bold asset-pos">-</p>
           </div>
         </div>
         
-        <!-- AI Validation -->
+        <!-- Social & News -->
         <div class="mb-4">
-          <p class="text-xs text-gray-500">AI Validation</p>
-          <p class="text-sm asset-validation">-</p>
+          <div class="flex justify-between items-center mb-1">
+            <p class="text-xs text-gray-500">Twitter Mentions</p>
+            <p class="text-xs font-medium asset-twitter-count">-</p>
+          </div>
+          <div class="flex justify-between items-center mb-1">
+            <p class="text-xs text-gray-500">News Sentiment</p>
+            <p class="text-xs font-medium asset-news-sentiment">-</p>
+          </div>
         </div>
         
         <!-- Actions -->
@@ -163,13 +187,28 @@
           <a href="#" target="_blank" class="asset-tradingview flex-1 bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 px-3 rounded text-sm text-center">
             <i class="fas fa-chart-line mr-1"></i> TradingView
           </a>
-          <button class="asset-details flex-1 bg-gray-100 hover:bg-gray-200 py-2 px-3 rounded text-sm text-center">
-            <i class="fas fa-info-circle mr-1"></i> Details
+          <button class="asset-news flex-1 bg-gray-100 hover:bg-gray-200 py-2 px-3 rounded text-sm text-center">
+            <i class="fas fa-newspaper mr-1"></i> News
           </button>
         </div>
       </div>
     </div>
   </template>
+
+  <!-- News Modal -->
+  <div id="news-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg w-full max-w-md max-h-[80vh] overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h3 class="font-bold text-lg">News for <span id="news-symbol">SYMBOL</span></h3>
+        <button id="close-news" class="text-gray-400 hover:text-gray-600">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="news-content" class="p-4 overflow-y-auto max-h-[65vh]">
+        <!-- News items will be inserted here -->
+      </div>
+    </div>
+  </div>
 
   <script>
     class TradingDashboard {
@@ -210,6 +249,11 @@
           this.showLoading();
           this.retryCount = 0;
           this.loadData();
+        });
+
+        // Close news modal
+        document.getElementById('close-news').addEventListener('click', () => {
+          document.getElementById('news-modal').classList.add('hidden');
         });
       }
 
@@ -322,31 +366,60 @@
           
           // Set technical indicators
           card.querySelector('.asset-rsi').textContent = asset.rsi.toFixed(1);
-          card.querySelector('.asset-volume').textContent = asset.volume >= 1000000 
-            ? `$${(asset.volume / 1000000).toFixed(1)}M` 
-            : `$${asset.volume.toLocaleString()}`;
-          card.querySelector('.asset-ema').textContent = `${asset.ema9.toFixed(2)} / ${asset.ema21.toFixed(2)}`;
-          card.querySelector('.asset-atr').textContent = asset.atr.toFixed(4);
+          card.querySelector('.asset-rvol').textContent = asset.rvol.toFixed(2) + 'x';
+          card.querySelector('.asset-ema').textContent = `${asset.ema5.toFixed(2)}/${asset.ema13.toFixed(2)}/${asset.ema50.toFixed(2)}`;
           
-          // Set AI score
-          const scoreElement = card.querySelector('.asset-score');
-          const scoreBar = card.querySelector('.ai-score');
-          scoreElement.textContent = `${asset.score}/100`;
-          scoreBar.style.setProperty('--percent', `${asset.score}%`);
+          // Calculate VWAP difference
+          const vwapDiff = ((asset.price - asset.vwap) / asset.vwap * 100).toFixed(2);
+          card.querySelector('.asset-vwap').textContent = `${vwapDiff}%`;
           
           // Set risk management
+          card.querySelector('.asset-entry').textContent = `$${asset.risk.entry.toFixed(2)}`;
+          card.querySelector('.asset-exit').textContent = asset.risk.exit;
           card.querySelector('.asset-sl').textContent = `$${asset.risk.stopLoss.toFixed(2)}`;
           card.querySelector('.asset-tp').textContent = `$${asset.risk.takeProfit.toFixed(2)}`;
           card.querySelector('.asset-pos').textContent = asset.risk.positionSize;
           
-          // Set validation
-          card.querySelector('.asset-validation').textContent = asset.validation;
+          // Set social data
+          if (asset.twitterMentions) {
+            card.querySelector('.asset-twitter-count').textContent = asset.twitterMentions;
+          }
+          if (asset.newsSentiment) {
+            card.querySelector('.asset-news-sentiment').textContent = asset.newsSentiment.toFixed(2);
+          }
           
           // Set TradingView link
           card.querySelector('.asset-tradingview').href = asset.tradingViewUrl;
           
+          // Set news button
+          const newsBtn = card.querySelector('.asset-news');
+          newsBtn.addEventListener('click', () => this.showNewsModal(asset));
+          
           container.appendChild(card);
         });
+      }
+
+      showNewsModal(asset) {
+        document.getElementById('news-symbol').textContent = asset.symbol;
+        const newsContent = document.getElementById('news-content');
+        
+        if (asset.news && asset.news.length > 0) {
+          newsContent.innerHTML = asset.news.map(item => `
+            <div class="mb-4 pb-4 border-b last:border-0">
+              <a href="${item.url}" target="_blank" class="text-blue-600 hover:underline font-medium">${item.title}</a>
+              <div class="flex justify-between items-center mt-1">
+                <span class="text-xs text-gray-500">${item.time}</span>
+                <span class="text-xs ${item.sentiment >= 0.6 ? 'badge-green' : 'badge-red'}">
+                  Sentiment: ${item.sentiment.toFixed(2)}
+                </span>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          newsContent.innerHTML = '<p class="text-gray-500">No news available</p>';
+        }
+        
+        document.getElementById('news-modal').classList.remove('hidden');
       }
 
       updateLastUpdated() {
