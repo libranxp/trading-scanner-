@@ -1,4 +1,4 @@
-name: Trading Scanner
+name: Trading Scanner CI
 on:
   schedule:
     - cron: '*/10 7-20 * * *'  # Every 10 min 08:00-21:00 BST
@@ -27,12 +27,23 @@ jobs:
         run: mkdir -p data
 
       - name: Run scanner
-        run: node fetch.js
+        run: node src/fetch.js
+
+      - name: Validate data files
+        run: |
+          node -e "
+            const crypto = require('./data/crypto.json');
+            const stocks = require('./data/stocks.json');
+            if (!Array.isArray(crypto.data) || !Array.isArray(stocks.data)) {
+              console.error('Invalid data format');
+              process.exit(1);
+            }
+          "
 
       - name: Commit results
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add data/
-          git diff-index --quiet HEAD || git commit -m "Update scan results"
+          git diff-index --quiet HEAD || git commit -m "Update scan results [skip ci]"
           git push
