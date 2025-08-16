@@ -1,13 +1,11 @@
 name: Trading Scanner CI
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Every 10 minutes
+    - cron: '*/10 * * * *'  # Runs every 10 minutes
   workflow_dispatch:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   scan:
@@ -22,17 +20,21 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm init -y
+          npm install axios technicalindicators --no-package-lock --no-save
+          echo "{\"dependencies\":{\"axios\":\"^1.6.7\",\"technicalindicators\":\"^3.1.0\"}}" > package.json
+
+      - name: Create data directory
+        run: mkdir -p data
 
       - name: Run scanner
-        run: node src/fetch.js
+        run: node fetch.js
 
-      - name: Verify data files
+      - name: Commit and push results
         run: |
-          if [ ! -f data/crypto.json ]; then
-            echo "::error::Data file not found!"
-            exit 1
-          fi
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add data/
+          git diff-index --quiet HEAD || git commit -m "Update scan results"
+          git push
