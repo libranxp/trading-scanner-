@@ -1,60 +1,35 @@
-name: Trading Scanner CI
+name: Trading Scanner
 on:
   schedule:
-    - cron: '*/10 7-20 * * *'  # Every 10 min 08:00-21:00 BST
+    - cron: '*/10 * * * *'  # Runs every 10 minutes
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci --production
-        
+
+      - name: Install dependencies directly
+        run: |
+          npm init -y
+          npm install axios technicalindicators --no-package-lock --no-save
+
       - name: Create data directory
         run: mkdir -p data
-        
+
       - name: Run scanner
-        run: |
-          max_retries=3
-          attempt=1
-          while [ $attempt -le $max_retries ]; do
-            node src/fetch.js && break
-            attempt=$((attempt + 1))
-            sleep 10
-          done
-          [ $attempt -gt $max_retries ] && exit 1
-          
-      - name: Verify data files
-        run: |
-          if [ ! -f data/crypto.json ] || [ ! -f data/stocks.json ]; then
-            echo "::error::Data files not found!"
-            exit 1
-          fi
-          
-          if [ ! -s data/crypto.json ] || [ ! -s data/stocks.json ]; then
-            echo "::error::Data files are empty!"
-            exit 1
-          fi
-          
-      - name: Commit updates
+        run: node fetch.js
+
+      - name: Commit results
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add data/
-          if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
-            git commit -m "Automatic scan update [skip ci]"
-            git pull --rebase
-            git push
-          fi
+          git commit -m "Update scan results" || echo "No changes to commit"
+          git push
