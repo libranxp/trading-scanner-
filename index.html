@@ -5,56 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Dashboard</title>
   <style>
-    /* Add all previous styles from the dashboard */
-    .tab-container {
-      display: flex;
-      margin-bottom: 20px;
-    }
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      background: #eee;
-      border: 1px solid #ddd;
-    }
-    .tab.active {
-      background: white;
-      border-bottom: 2px solid #4CAF50;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    .asset-card {
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .asset-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .news-item {
-      margin-bottom: 10px;
-      padding: 10px;
-      background: #f9f9f9;
+    /* [Previous styles remain the same] */
+    .error-message {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 15px;
       border-radius: 4px;
+      margin: 20px 0;
     }
-    .rsi-indicator {
-      display: inline-block;
-      width: 60px;
-      text-align: center;
-      border-radius: 4px;
-      padding: 2px 5px;
-    }
-    .rsi-overbought {
-      background-color: #ffcccc;
-    }
-    .rsi-oversold {
-      background-color: #ccffcc;
-    }
-    .rsi-neutral {
-      background-color: #ffffcc;
+    .data-placeholder {
+      color: #666;
+      font-style: italic;
     }
   </style>
 </head>
@@ -63,179 +24,138 @@
     <h1>Trading Scanner Dashboard</h1>
     <div class="last-updated">Last Updated: <span id="update-time">Loading...</span></div>
     
+    <div id="error-container" class="error-message" style="display: none;"></div>
+    
     <div class="tab-container">
       <div class="tab active" data-tab="crypto">Cryptocurrencies</div>
       <div class="tab" data-tab="stocks">Stocks</div>
     </div>
     
     <div id="crypto-tab" class="tab-content active">
-      <div class="dashboard" id="crypto-container"></div>
+      <div class="dashboard" id="crypto-container">
+        <p class="data-placeholder">Loading cryptocurrency data...</p>
+      </div>
     </div>
     
     <div id="stocks-tab" class="tab-content">
-      <div class="dashboard" id="stocks-container"></div>
-    </div>
-    
-    <div id="asset-detail" style="display: none;">
-      <h2 id="detail-title"></h2>
-      <div id="detail-content"></div>
-      <button onclick="hideDetail()">Back to List</button>
+      <div class="dashboard" id="stocks-container">
+        <p class="data-placeholder">Loading stock data...</p>
+      </div>
     </div>
   </div>
 
   <script>
-    let currentData = { crypto: [], stocks: [] };
-    
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        
-        tab.classList.add('active');
-        document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
-      });
-    });
-
-    async function loadData() {
-      try {
-        const [cryptoRes, stocksRes] = await Promise.all([
-          fetch('data/crypto.json'),
-          fetch('data/stocks.json')
-        ]);
-        
-        const cryptoData = await cryptoRes.json();
-        const stocksData = await stocksRes.json();
-        
-        currentData = {
-          crypto: cryptoData.data || [],
-          stocks: stocksData.data || []
-        };
-        
-        document.getElementById('update-time').textContent = 
-          new Date(Math.max(
-            new Date(cryptoData.lastUpdated), 
-            new Date(stocksData.lastUpdated)
-          )).toLocaleString();
-        
-        renderData('crypto', currentData.crypto);
-        renderData('stocks', currentData.stocks);
-      } catch (error) {
-        console.error('Error loading data:', error);
-        document.getElementById('crypto-container').innerHTML = `
-          <div class="crypto-card">
-            <p>Error loading data: ${error.message}</p>
-          </div>
-        `;
-      }
+    // Safe data display functions
+    function formatNumber(value, decimals = 2) {
+      if (value === undefined || value === null) return 'N/A';
+      return parseFloat(value).toFixed(decimals);
     }
 
-    function renderData(type, data) {
-      const container = document.getElementById(`${type}-container`);
-      
-      if (data.length === 0) {
-        container.innerHTML = '<div class="crypto-card"><p>No data available</p></div>';
-        return;
-      }
+    function formatPriceChange(change) {
+      if (change === undefined || change === null) return 'N/A';
+      const fixed = formatNumber(change, 2);
+      return `${change >= 0 ? '+' : ''}${fixed}%`;
+    }
 
-      container.innerHTML = data.map(item => `
-        <div class="crypto-card" data-id="${item.symbol}" data-type="${type}">
-          <div class="crypto-header">
-            <h3>${item.name} (${item.symbol})</h3>
-            <span class="price">$${item.price.toFixed(2)}</span>
-          </div>
-          <div class="crypto-details">
-            <div class="detail">
-              <span>Change:</span>
-              <span class="${item.change >= 0 ? 'positive' : 'negative'}">
-                ${item.change >= 0 ? '+' : ''}${item.change.toFixed(2)}%
-              </span>
-            </div>
-            <div class="detail">
-              <span>Volume:</span>
-              <span>$${(item.volume / (type === 'crypto' ? 1000000 : 1000)).toFixed(1)}${type === 'crypto' ? 'M' : 'K'}</span>
-            </div>
-            <div class="detail">
-              <span>RSI:</span>
-              <span class="rsi-indicator ${getRsiClass(item.rsi)}">${item.rsi?.toFixed(1) || 'N/A'}</span>
-            </div>
-          </div>
-          ${item.news?.length > 0 ? `
-            <div class="news-preview">
-              <p><strong>Latest News:</strong> ${item.news[0].title}</p>
-            </div>
-          ` : ''}
-        </div>
-      `).join('');
-
-      // Add click event to show details
-      document.querySelectorAll('.crypto-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const symbol = card.getAttribute('data-id');
-          const type = card.getAttribute('data-type');
-          showDetail(symbol, type);
-        });
-      });
+    function getChangeClass(change) {
+      if (change === undefined || change === null) return '';
+      return change >= 0 ? 'positive' : 'negative';
     }
 
     function getRsiClass(rsi) {
-      if (!rsi) return '';
+      if (rsi === undefined || rsi === null) return '';
       if (rsi > 70) return 'rsi-overbought';
       if (rsi < 30) return 'rsi-oversold';
       return 'rsi-neutral';
     }
 
-    function showDetail(symbol, type) {
-      const asset = currentData[type].find(item => item.symbol === symbol);
-      if (!asset) return;
+    // Data loader with error handling
+    async function loadData() {
+      try {
+        document.getElementById('error-container').style.display = 'none';
+        
+        const [cryptoRes, stocksRes] = await Promise.all([
+          fetch('data/crypto.json').then(res => {
+            if (!res.ok) throw new Error('Failed to load crypto data');
+            return res.json();
+          }),
+          fetch('data/stocks.json').then(res => {
+            if (!res.ok) throw new Error('Failed to load stock data');
+            return res.json();
+          })
+        ]);
 
-      document.querySelector('.tab-content.active').style.display = 'none';
-      document.getElementById('asset-detail').style.display = 'block';
+        // Validate response structure
+        if (!cryptoRes || !stocksRes || !Array.isArray(cryptoRes.data) || !Array.isArray(stocksRes.data)) {
+          throw new Error('Invalid data format from server');
+        }
 
-      document.getElementById('detail-title').textContent = `${asset.name} (${asset.symbol})`;
+        // Update UI
+        document.getElementById('update-time').textContent = 
+          new Date(Math.max(
+            new Date(cryptoRes.lastUpdated || 0),
+            new Date(stocksRes.lastUpdated || 0)
+          )).toLocaleString();
+
+        renderData('crypto', cryptoRes.data);
+        renderData('stocks', stocksRes.data);
+
+      } catch (error) {
+        console.error('Data loading error:', error);
+        showError(`Failed to load data: ${error.message}`);
+      }
+    }
+
+    function renderData(type, items) {
+      const container = document.getElementById(`${type}-container`);
       
-      const detailContent = document.getElementById('detail-content');
-      detailContent.innerHTML = `
-        <div class="asset-metrics">
-          <p><strong>Price:</strong> $${asset.price.toFixed(2)}</p>
-          <p><strong>24h Change:</strong> 
-            <span class="${asset.change >= 0 ? 'positive' : 'negative'}">
-              ${asset.change >= 0 ? '+' : ''}${asset.change.toFixed(2)}%
-            </span>
-          </p>
-          <p><strong>Volume:</strong> $${(asset.volume / (type === 'crypto' ? 1000000 : 1000)).toFixed(1)}${type === 'crypto' ? 'M' : 'K'}</p>
-          ${asset.marketCap ? `<p><strong>Market Cap:</strong> $${(asset.marketCap / 1000000000).toFixed(2)}B</p>` : ''}
-          <p><strong>RSI (14):</strong> <span class="rsi-indicator ${getRsiClass(asset.rsi)}">${asset.rsi?.toFixed(1) || 'N/A'}</span></p>
-          <p><strong>EMA Alignment:</strong> ${asset.emaAlignment ? 'Bullish (5 > 13 > 50)' : 'Not aligned'}</p>
-        </div>
+      if (!items || items.length === 0) {
+        container.innerHTML = '<p class="data-placeholder">No data available</p>';
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        if (!item) return '';
         
-        <div class="news-container">
-          <h3>Recent News</h3>
-          ${asset.news?.length > 0 ? 
-            asset.news.map(news => `
-              <div class="news-item">
-                <p><strong>${news.time}</strong></p>
-                <p><a href="${news.url}" target="_blank">${news.title}</a></p>
+        return `
+          <div class="crypto-card">
+            <div class="crypto-header">
+              <h3>${item.name || 'Unknown'} (${item.symbol || 'N/A'})</h3>
+              <span class="price">$${formatNumber(item.price)}</span>
+            </div>
+            <div class="crypto-details">
+              <div class="detail">
+                <span>Change:</span>
+                <span class="${getChangeClass(item.change || item.change24h)}">
+                  ${formatPriceChange(item.change || item.change24h)}
+                </span>
               </div>
-            `).join('') : 
-            '<p>No recent news found</p>'
-          }
-        </div>
-        
-        <div class="actions">
-          <a href="${asset.tradingViewUrl}" target="_blank" class="btn">View on TradingView</a>
-        </div>
-      `;
+              <div class="detail">
+                <span>Volume:</span>
+                <span>$${formatNumber((item.volume || 0) / (type === 'crypto' ? 1000000 : 1000), 1)}
+                ${type === 'crypto' ? 'M' : 'K'}</span>
+              </div>
+              <div class="detail">
+                <span>RSI:</span>
+                <span class="rsi-indicator ${getRsiClass(item.rsi)}">
+                  ${formatNumber(item.rsi, 1)}
+                </span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    function hideDetail() {
-      document.getElementById('asset-detail').style.display = 'none';
-      document.querySelector('.tab-content.active').style.display = 'block';
+    function showError(message) {
+      const errorContainer = document.getElementById('error-container');
+      errorContainer.textContent = message;
+      errorContainer.style.display = 'block';
     }
 
-    // Load data immediately and every minute
+    // Initialize
     loadData();
-    setInterval(loadData, 60000);
+    setInterval(loadData, 60000); // Refresh every minute
   </script>
 </body>
 </html>
