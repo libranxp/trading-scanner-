@@ -17,19 +17,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
-          npm install
-          cd src && npm install axios cheerio puppeteer technicalindicators mathjs --no-package-lock --no-save
+          npm ci --omit=dev
+          npm audit fix --force
 
-      - name: Create data directory
-        run: mkdir -p public/data
+      - name: Create directories
+        run: |
+          mkdir -p public/data
+          mkdir -p src
 
       - name: Run scanner
-        run: |
-          cd src
-          node fetch.js
+        run: node src/fetch.js
 
       - name: Verify data files
         run: |
