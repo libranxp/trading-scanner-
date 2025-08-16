@@ -2,9 +2,11 @@
   "name": "trading-scanner",
   "version": "1.0.0",
   "description": "Trading scanner dashboard",
+  "main": "src/fetch.js",
   "scripts": {
     "start": "node src/fetch.js",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "echo \"No tests specified\" && exit 0",
+    "prepare": "npm audit fix --force"
   },
   "dependencies": {
     "axios": "^1.6.7",
@@ -15,5 +17,10 @@
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "overrides": {
+    "puppeteer": {
+      "chrome-for-testing": "~121.0.6167.85"
+    }
   }
 }
