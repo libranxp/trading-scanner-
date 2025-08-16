@@ -1,39 +1,37 @@
 const fs = require('fs');
 const axios = require('axios');
 
-const DATA_DIR = 'public/data';
-const CRYPTO_FILE = `${DATA_DIR}/crypto.json`;
+// Create data directory if not exists
+if (!fs.existsSync('data')) {
+  fs.mkdirSync('data');
+}
 
 async function fetchMarketData() {
   try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-
+    console.log('Fetching market data from CoinGecko...');
+    
     const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
       params: {
         vs_currency: 'usd',
         order: 'market_cap_desc',
         per_page: 100,
-        price_change_percentage: '1h,24h,7d',
-        sparkline: true
+        price_change_percentage: '24h',
+        sparkline: false
       },
-      timeout: 15000
+      timeout: 10000
     });
 
     const data = response.data.map(coin => ({
-      id: coin.id,
       symbol: coin.symbol.toUpperCase(),
       name: coin.name,
       price: coin.current_price,
       change24h: coin.price_change_percentage_24h,
       volume: coin.total_volume,
       marketCap: coin.market_cap,
-      sparkline: coin.sparkline_in_7d.price,
       lastUpdated: new Date().toISOString()
     }));
 
-    fs.writeFileSync(CRYPTO_FILE, JSON.stringify({
+    fs.writeFileSync('data/crypto.json', JSON.stringify({
       lastUpdated: new Date().toISOString(),
       data: data
     }, null, 2));
@@ -41,7 +39,8 @@ async function fetchMarketData() {
     console.log('Successfully updated market data');
   } catch (error) {
     console.error('Error fetching data:', error.message);
-    fs.writeFileSync(CRYPTO_FILE, JSON.stringify({
+    // Write empty file on error
+    fs.writeFileSync('data/crypto.json', JSON.stringify({
       lastUpdated: new Date().toISOString(),
       data: [],
       error: error.message
