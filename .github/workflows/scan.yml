@@ -1,40 +1,38 @@
-name: Trading Scanner
+name: Trading Scanner CI
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Runs every 10 minutes
+    - cron: '*/10 * * * *'  # Every 10 minutes
   workflow_dispatch:
 
 permissions:
-  contents: write  # This is crucial for push access
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # This provides the necessary permissions
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm init -y
-          npm install axios --no-package-lock --no-save
-
-      - name: Create data directory
-        run: mkdir -p data
+        run: npm ci
 
       - name: Run scanner
-        run: node fetch.js
+        run: node src/fetch.js
 
-      - name: Commit and push changes
+      - name: Verify data files
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add data/
-          git diff-index --quiet HEAD || git commit -m "Update scan results"
-          git push
+          if [ ! -f data/crypto.json ]; then
+            echo "::error::Data file not found!"
+            exit 1
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
