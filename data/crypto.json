@@ -1,405 +1,405 @@
 {
-  "lastUpdated": "2025-08-16T14:02:02.029Z",
+  "lastUpdated": "2025-08-16T14:07:23.364Z",
   "data": [
     {
       "symbol": "BTC",
       "name": "Bitcoin",
-      "price": 117688,
-      "change24h": -0.33565,
-      "volume": 33635778901,
-      "lastUpdated": "2025-08-16T14:02:02.028Z"
+      "price": 117691,
+      "change24h": -0.33308,
+      "volume": 33415828331,
+      "lastUpdated": "2025-08-16T14:07:23.363Z"
     },
     {
       "symbol": "ETH",
       "name": "Ethereum",
-      "price": 4394.81,
-      "change24h": -3.60759,
-      "volume": 39912947185,
-      "lastUpdated": "2025-08-16T14:02:02.028Z"
+      "price": 4397.43,
+      "change24h": -3.55009,
+      "volume": 39011200737,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "XRP",
       "name": "XRP",
       "price": 3.11,
-      "change24h": 0.69065,
-      "volume": 6286907330,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": 0.61685,
+      "volume": 6240350370,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "USDT",
       "name": "Tether",
       "price": 1.001,
-      "change24h": 0.01335,
-      "volume": 95176144401,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": 0.0121,
+      "volume": 94199907446,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "BNB",
       "name": "BNB",
-      "price": 829.45,
-      "change24h": -0.69547,
-      "volume": 1766302954,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 829.71,
+      "change24h": -0.61894,
+      "volume": 1731536536,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "SOL",
       "name": "Solana",
-      "price": 187.51,
-      "change24h": -2.02322,
-      "volume": 7330798469,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 187.59,
+      "change24h": -1.98146,
+      "volume": 7257171749,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "USDC",
       "name": "USDC",
-      "price": 0.999805,
-      "change24h": -0.00257,
-      "volume": 16366020983,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.999814,
+      "change24h": -0.00166,
+      "volume": 15603986483,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "STETH",
       "name": "Lido Staked Ether",
-      "price": 4386.21,
-      "change24h": -3.44155,
-      "volume": 71003254,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 4386.31,
+      "change24h": -3.60175,
+      "volume": 68073221,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "DOGE",
       "name": "Dogecoin",
-      "price": 0.227528,
-      "change24h": -0.3902,
-      "volume": 3687209422,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.227361,
+      "change24h": -0.46341,
+      "volume": 3642985541,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "ADA",
       "name": "Cardano",
-      "price": 0.907507,
-      "change24h": -4.0898,
-      "volume": 3515730650,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.906362,
+      "change24h": -4.21081,
+      "volume": 3490923514,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "TRX",
       "name": "TRON",
-      "price": 0.34825,
-      "change24h": -1.94059,
-      "volume": 1485836453,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.347615,
+      "change24h": -2.11927,
+      "volume": 1469530450,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "WSTETH",
       "name": "Wrapped stETH",
-      "price": 5316.73,
-      "change24h": -3.61022,
-      "volume": 70645634,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 5315.93,
+      "change24h": -3.62457,
+      "volume": 68542345,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "HYPE",
       "name": "Hyperliquid",
-      "price": 46.66,
-      "change24h": -2.10828,
-      "volume": 286647818,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 46.69,
+      "change24h": -2.04955,
+      "volume": 284755867,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "WBTC",
       "name": "Wrapped Bitcoin",
-      "price": 117599,
-      "change24h": -0.14411,
-      "volume": 176915503,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 117749,
+      "change24h": -0.01662,
+      "volume": 175357346,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "LINK",
       "name": "Chainlink",
-      "price": 21.72,
-      "change24h": -2.65177,
-      "volume": 1048542404,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 21.71,
+      "change24h": -2.65974,
+      "volume": 1027890487,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "WBETH",
       "name": "Wrapped Beacon ETH",
-      "price": 4729.88,
-      "change24h": -4.3017,
-      "volume": 18409664,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 4728.75,
+      "change24h": -3.53744,
+      "volume": 18319938,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "XLM",
       "name": "Stellar",
-      "price": 0.424571,
-      "change24h": -0.28151,
-      "volume": 457217652,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.424338,
+      "change24h": -0.33629,
+      "volume": 450425726,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "SUI",
       "name": "Sui",
-      "price": 3.72,
-      "change24h": -1.67208,
-      "volume": 1730022085,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 3.73,
+      "change24h": -1.62736,
+      "volume": 1691059125,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "WEETH",
       "name": "Wrapped eETH",
-      "price": 4716.53,
-      "change24h": -3.44141,
-      "volume": 11941490,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 4716.92,
+      "change24h": -3.43348,
+      "volume": 11937902,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "BCH",
       "name": "Bitcoin Cash",
-      "price": 585.85,
-      "change24h": -0.80779,
-      "volume": 280838930,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 585.83,
+      "change24h": -0.81151,
+      "volume": 278110688,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "USDE",
       "name": "Ethena USDe",
       "price": 1.001,
-      "change24h": 0.09462,
-      "volume": 271000076,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": 0.10801,
+      "volume": 269662364,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "HBAR",
       "name": "Hedera",
-      "price": 0.249749,
-      "change24h": -0.58697,
-      "volume": 341571432,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.249853,
+      "change24h": -0.54544,
+      "volume": 369048856,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "AVAX",
       "name": "Avalanche",
       "price": 23.73,
-      "change24h": -2.01084,
-      "volume": 893821591,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -2.01062,
+      "volume": 901265183,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "WETH",
       "name": "WETH",
-      "price": 4397.35,
-      "change24h": -3.35484,
-      "volume": 752774082,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 4399.46,
+      "change24h": -3.30856,
+      "volume": 890245541,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "LTC",
       "name": "Litecoin",
-      "price": 118,
-      "change24h": -1.44612,
-      "volume": 743145227,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 118.19,
+      "change24h": -1.28332,
+      "volume": 742101906,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "TON",
       "name": "Toncoin",
       "price": 3.48,
-      "change24h": -0.08024,
-      "volume": 150749619,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -0.05432,
+      "volume": 215002398,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "LEO",
       "name": "LEO Token",
       "price": 9.42,
-      "change24h": -2.89335,
-      "volume": 4702451,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -2.85417,
+      "volume": 4621630,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "USDS",
       "name": "USDS",
-      "price": 0.999234,
-      "change24h": -0.05515,
-      "volume": 25715810,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.999754,
+      "change24h": 0.01118,
+      "volume": 25712228,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "SHIB",
       "name": "Shiba Inu",
-      "price": 0.00001292,
-      "change24h": 0.1451,
-      "volume": 235663506,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.0000129,
+      "change24h": 0.01946,
+      "volume": 234123089,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "BSC-USD",
       "name": "Binance Bridged USDT (BNB Smart Chain)",
       "price": 1.001,
-      "change24h": -0.09995,
-      "volume": 1889824011,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -0.10401,
+      "volume": 1828062962,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "UNI",
       "name": "Uniswap",
       "price": 10.84,
-      "change24h": -0.3189,
-      "volume": 762991061,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -0.33328,
+      "volume": 755842643,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "WBT",
       "name": "WhiteBIT Coin",
-      "price": 44.83,
-      "change24h": -1.08272,
-      "volume": 44901062,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 44.82,
+      "change24h": -1.19783,
+      "volume": 41257060,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "CBBTC",
       "name": "Coinbase Wrapped BTC",
-      "price": 117792,
-      "change24h": -0.10837,
-      "volume": 449636505,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 117745,
+      "change24h": -0.0888,
+      "volume": 454644701,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "DOT",
       "name": "Polkadot",
       "price": 3.92,
-      "change24h": -1.04872,
-      "volume": 293032600,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -1.04863,
+      "volume": 303742313,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "SUSDE",
       "name": "Ethena Staked USDe",
       "price": 1.19,
-      "change24h": 0.06165,
-      "volume": 15710754,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": 0.06602,
+      "volume": 15710003,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "BGB",
       "name": "Bitget Token",
-      "price": 4.61,
-      "change24h": 1.07381,
-      "volume": 136940217,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 4.6,
+      "change24h": 0.41716,
+      "volume": 135245012,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "CRO",
       "name": "Cronos",
-      "price": 0.150121,
-      "change24h": -2.49899,
-      "volume": 30615173,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.150164,
+      "change24h": -2.47073,
+      "volume": 30491326,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "ENA",
       "name": "Ethena",
-      "price": 0.711396,
-      "change24h": -2.45842,
-      "volume": 868377694,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.710513,
+      "change24h": -2.57951,
+      "volume": 859126092,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "PEPE",
       "name": "Pepe",
-      "price": 0.00001095,
-      "change24h": -0.77442,
-      "volume": 1176961840,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
-    },
-    {
-      "symbol": "XMR",
-      "name": "Monero",
-      "price": 240.19,
-      "change24h": 0.93833,
-      "volume": 44834594,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.00001094,
+      "change24h": -0.85679,
+      "volume": 1157698834,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "AAVE",
       "name": "Aave",
-      "price": 291.19,
-      "change24h": -5.37896,
-      "volume": 530762523,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 291.18,
+      "change24h": -5.38213,
+      "volume": 523823998,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
+    },
+    {
+      "symbol": "XMR",
+      "name": "Monero",
+      "price": 239.79,
+      "change24h": 0.76874,
+      "volume": 44896068,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "MNT",
       "name": "Mantle",
-      "price": 1.29,
-      "change24h": 12.40914,
-      "volume": 352873132,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 1.3,
+      "change24h": 12.99591,
+      "volume": 347279344,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "DAI",
       "name": "Dai",
       "price": 1,
-      "change24h": 0.02945,
-      "volume": 134790220,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": 0.04864,
+      "volume": 132806534,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "TAO",
       "name": "Bittensor",
-      "price": 367.02,
-      "change24h": -2.49754,
-      "volume": 90465411,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 366.94,
+      "change24h": -2.69677,
+      "volume": 88180910,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "ETC",
       "name": "Ethereum Classic",
       "price": 22.03,
-      "change24h": -0.74631,
-      "volume": 183079980,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -1.04903,
+      "volume": 180923105,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "NEAR",
       "name": "NEAR Protocol",
       "price": 2.7,
-      "change24h": -1.67783,
-      "volume": 183570798,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -1.60723,
+      "volume": 198774998,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "APT",
       "name": "Aptos",
       "price": 4.65,
-      "change24h": -1.05245,
-      "volume": 470409972,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -1.17878,
+      "volume": 448991599,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "ONDO",
       "name": "Ondo",
-      "price": 0.986308,
-      "change24h": -1.49221,
-      "volume": 155303693,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.985747,
+      "change24h": -1.69263,
+      "volume": 151680153,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "PI",
       "name": "Pi Network",
-      "price": 0.380991,
-      "change24h": 0.09707,
-      "volume": 51817797,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "price": 0.380843,
+      "change24h": 0.05808,
+      "volume": 51255094,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     },
     {
       "symbol": "ICP",
       "name": "Internet Computer",
       "price": 5.41,
-      "change24h": -0.64705,
-      "volume": 57398569,
-      "lastUpdated": "2025-08-16T14:02:02.029Z"
+      "change24h": -0.64304,
+      "volume": 56524765,
+      "lastUpdated": "2025-08-16T14:07:23.364Z"
     }
   ]
 }
