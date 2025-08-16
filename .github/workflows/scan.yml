@@ -1,7 +1,7 @@
 name: Trading Scanner
 on:
   schedule:
-    - cron: '*/10 * * * *'  # Runs every 10 minutes
+    - cron: '*/10 7-20 * * *'  # Every 10 min 08:00-21:00 BST
   workflow_dispatch:
 
 permissions:
@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies directly
+      - name: Install dependencies
         run: |
-          # Skip package.json creation and install directly
-          npm install axios@1.6.7 technicalindicators@3.1.0 --no-package-lock --no-save --global-style
+          npm init -y
+          npm install axios cheerio puppeteer technicalindicators mathjs --no-package-lock --no-save
 
       - name: Create data directory
         run: mkdir -p data
