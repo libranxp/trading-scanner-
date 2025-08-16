@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-08-16T11:02:55.560Z",
+  "lastUpdated": "2025-08-16T11:08:51.481Z",
   "data": [
     {
       "symbol": "AAPL",
@@ -20,7 +20,7 @@
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=AAPL",
-      "lastUpdated": "2025-08-16T11:02:55.436Z"
+      "lastUpdated": "2025-08-16T11:08:51.341Z"
     },
     {
       "symbol": "MSFT",
@@ -41,7 +41,7 @@
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=MSFT",
-      "lastUpdated": "2025-08-16T11:02:55.453Z"
+      "lastUpdated": "2025-08-16T11:08:51.263Z"
     },
     {
       "symbol": "GOOGL",
@@ -50,19 +50,19 @@
       "change24h": 0.47304622055779344,
       "volume": 34785039,
       "rsi": 27.41,
-      "ema9": 204.5985673408632,
-      "ema21": 204.9950348956793,
-      "atr": 4.101826685286689,
+      "ema9": 204.59856603406593,
+      "ema21": 204.99487025090005,
+      "atr": 4.101820108788756,
       "score": 39,
       "validation": "Oversold (RSI < 30)",
       "risk": {
-        "stopLoss": 197.74725386855434,
-        "takeProfit": 216.20547395234442,
+        "stopLoss": 197.74726373330125,
+        "takeProfit": 216.20545422285062,
         "positionSize": "10.0%"
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=GOOGL",
-      "lastUpdated": "2025-08-16T11:02:55.392Z"
+      "lastUpdated": "2025-08-16T11:08:51.417Z"
     },
     {
       "symbol": "AMZN",
@@ -83,7 +83,7 @@
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=AMZN",
-      "lastUpdated": "2025-08-16T11:02:55.419Z"
+      "lastUpdated": "2025-08-16T11:08:51.326Z"
     },
     {
       "symbol": "TSLA",
@@ -104,7 +104,7 @@
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=TSLA",
-      "lastUpdated": "2025-08-16T11:02:55.488Z"
+      "lastUpdated": "2025-08-16T11:08:51.481Z"
     },
     {
       "symbol": "NVDA",
@@ -125,7 +125,7 @@
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=NVDA",
-      "lastUpdated": "2025-08-16T11:02:55.560Z"
+      "lastUpdated": "2025-08-16T11:08:51.309Z"
     },
     {
       "symbol": "META",
@@ -134,19 +134,19 @@
       "change24h": 0.39635354736424766,
       "volume": 11277795,
       "rsi": 32.87,
-      "ema9": 786.4965806254932,
-      "ema21": 787.1429213187847,
-      "atr": 15.7477698844726,
+      "ema9": 786.4965810621445,
+      "ema21": 787.142976332959,
+      "atr": 15.74777208193434,
       "score": 41,
       "validation": "Neutral market conditions",
       "risk": {
-        "stopLoss": 761.6083256420411,
-        "takeProfit": 832.4732901221678,
+        "stopLoss": 761.6083223458485,
+        "takeProfit": 832.473296714553,
         "positionSize": "10.0%"
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=META",
-      "lastUpdated": "2025-08-16T11:02:55.524Z"
+      "lastUpdated": "2025-08-16T11:08:51.376Z"
     },
     {
       "symbol": "JPM",
@@ -155,19 +155,19 @@
       "change24h": -1.2476203426706634,
       "volume": 7301669,
       "rsi": 42.05,
-      "ema9": 290.79731883735013,
-      "ema21": 290.880413630321,
-      "atr": 5.817766182706693,
+      "ema9": 290.7973188136446,
+      "ema21": 290.88040426320543,
+      "atr": 5.817765221556541,
       "score": 46,
       "validation": "Neutral market conditions",
       "risk": {
-        "stopLoss": 281.76334096031496,
-        "takeProfit": 307.9432887824951,
+        "stopLoss": 281.76334240204017,
+        "takeProfit": 307.9432858990446,
         "positionSize": "10.0%"
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=JPM",
-      "lastUpdated": "2025-08-16T11:02:55.470Z"
+      "lastUpdated": "2025-08-16T11:08:51.289Z"
     },
     {
       "symbol": "V",
@@ -188,7 +188,7 @@
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=V",
-      "lastUpdated": "2025-08-16T11:02:55.543Z"
+      "lastUpdated": "2025-08-16T11:08:51.392Z"
     },
     {
       "symbol": "WMT",
@@ -197,19 +197,19 @@
       "change24h": -0.6112408686577475,
       "volume": 10028284,
       "rsi": 37.63,
-      "ema9": 100.10319216594364,
-      "ema21": 100.11736695162826,
-      "atr": 2.0020732042183247,
+      "ema9": 100.10319233319244,
+      "ema21": 100.11739787271118,
+      "atr": 2.0020745204290478,
       "score": 44,
       "validation": "Neutral market conditions",
       "risk": {
-        "stopLoss": 96.99689019367251,
-        "takeProfit": 106.00621961265497,
+        "stopLoss": 96.99688821935642,
+        "takeProfit": 106.00622356128714,
         "positionSize": "10.0%"
       },
       "news": [],
       "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=WMT",
-      "lastUpdated": "2025-08-16T11:02:55.507Z"
+      "lastUpdated": "2025-08-16T11:08:51.358Z"
     }
   ]
 }
