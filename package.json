@@ -2,9 +2,9 @@
   "name": "trading-scanner",
   "version": "1.0.0",
   "description": "Advanced trading scanner dashboard",
-  "main": "fetch.js",
+  "main": "src/fetch.js",
   "scripts": {
-    "start": "node fetch.js",
+    "start": "node src/fetch.js",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
