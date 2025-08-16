@@ -10,14 +10,14 @@ const CONFIG = {
     params: {
       vs_currency: 'usd',
       order: 'market_cap_desc',
-      per_page: 10,
+      per_page: 20,
       sparkline: true,
       price_change_percentage: '24h'
     }
   },
   STOCKS: {
     apiUrl: 'https://query1.finance.yahoo.com/v8/finance/chart',
-    symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'BRK-B', 'JPM', 'V'],
+    symbols: ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'NVDA', 'META', 'JPM', 'V', 'WMT'],
     params: {
       interval: '5m',
       range: '1d'
@@ -25,27 +25,11 @@ const CONFIG = {
   }
 };
 
-// Technical Analysis Engine
-class Analyzer {
-  static calculateIndicators(prices) {
-    const closes = prices.slice(-100).filter(Boolean);
-    if (closes.length < 14) return null;
-    
-    return {
-      rsi: ti.rsi({ values: closes.slice(-24), period: 14 }).pop() || 50,
-      ema9: ti.ema({ values: closes, period: 9 }).pop(),
-      ema21: ti.ema({ values: closes, period: 21 }).pop(),
-      atr: ti.atr({
-        high: closes.map(p => p * 1.01),
-        low: closes.map(p => p * 0.99),
-        close: closes,
-        period: 14
-      }).pop()
-    };
-  }
+// Create data directory if not exists
+if (!fs.existsSync('data')) {
+  fs.mkdirSync('data');
 }
 
-// Data Processing Functions
 async function fetchCryptoData() {
   try {
     const response = await axios.get(CONFIG.CRYPTO.apiUrl, {
@@ -65,74 +49,136 @@ async function fetchStockData(symbol) {
       params: CONFIG.STOCKS.params,
       timeout: 15000
     });
-    return {
-      symbol,
-      data: response.data.chart.result[0]
-    };
+    return response.data.chart.result[0];
   } catch (error) {
     console.error(`Failed to fetch ${symbol} data:`, error.message);
     return null;
   }
 }
 
-async function processAssets() {
-  if (!fs.existsSync('data')) fs.mkdirSync('data');
+function calculateIndicators(prices) {
+  const closes = prices.slice(-100);
+  return {
+    price: closes[closes.length - 1],
+    rsi: ti.rsi({ values: closes.slice(-24), period: 14 }).pop() || 50,
+    ema9: ti.ema({ values: closes, period: 9 }).pop(),
+    ema21: ti.ema({ values: closes, period: 21 }).pop(),
+    atr: ti.atr({
+      high: prices.map(p => p * 1.01),
+      low: prices.map(p => p * 0.99),
+      close: prices,
+      period: 14
+    }).pop()
+  };
+}
 
+async function scrapeNews(symbol, isCrypto) {
   try {
-    // Process Cryptocurrencies
-    const cryptoAssets = await fetchCryptoData();
-    const cryptoResults = await Promise.all(cryptoAssets.map(async asset => {
-      const prices = asset.sparkline_in_7d.price;
-      const indicators = Analyzer.calculateIndicators(prices);
-      if (!indicators) return null;
+    const url = isCrypto
+      ? `https://www.tradingview.com/symbols/${symbol}USD/news/`
+      : `https://www.tradingview.com/symbols/${symbol}/news/`;
+    
+    const { data } = await axios.get(url, { timeout: 10000 });
+    const $ = cheerio.load(data);
+    return $('.news-item').slice(0, 3).map((_, el) => ({
+      title: $(el).find('.title').text().trim(),
+      url: `https://www.tradingview.com${$(el).attr('href')}`,
+      time: $(el).find('.time').text().trim()
+    })).get();
+  } catch (error) {
+    console.error(`News scrape failed for ${symbol}:`, error.message);
+    return [];
+  }
+}
 
+function generateSignal(asset, indicators, isCrypto) {
+  const score = Math.min(100, Math.max(0, 
+    50 + (indicators.rsi - 50) * 0.5 + 
+    (asset.price_change_percentage_24h || 0) * 2
+  ));
+
+  const reasons = [];
+  if (indicators.rsi < 30) reasons.push('Oversold (RSI < 30)');
+  if (indicators.rsi > 70) reasons.push('Overbought (RSI > 70)');
+  if (indicators.ema9 > indicators.ema21) reasons.push('Bullish EMA Cross');
+
+  const atrPercent = (indicators.atr / indicators.price) * 100;
+  
+  return {
+    score: Math.round(score),
+    validation: reasons.length ? reasons.join(' • ') : 'Neutral market conditions',
+    risk: {
+      stopLoss: indicators.price * (1 - (atrPercent * 1.5 / 100)),
+      takeProfit: indicators.price * (1 + (atrPercent * 3 / 100)),
+      positionSize: `${Math.min(10, (1 / atrPercent) * 100).toFixed(1)}%`
+    }
+  };
+}
+
+async function runScan() {
+  try {
+    console.log('Starting market scan...');
+    
+    // Fetch crypto data
+    const cryptos = await fetchCryptoData();
+    const cryptoResults = await Promise.all(cryptos.map(async crypto => {
+      const indicators = calculateIndicators(crypto.sparkline_in_7d.price);
+      const signal = generateSignal(crypto, indicators, true);
+      
       return {
-        symbol: asset.symbol.toUpperCase(),
-        name: asset.name,
-        price: asset.current_price,
-        change24h: asset.price_change_percentage_24h,
-        volume: asset.total_volume,
+        symbol: crypto.symbol.toUpperCase(),
+        name: crypto.name,
+        price: crypto.current_price,
+        change24h: crypto.price_change_percentage_24h,
+        volume: crypto.total_volume,
         ...indicators,
-        tradingViewUrl: `https://www.tradingview.com/chart/?symbol=${asset.symbol.toUpperCase()}USD`,
+        ...signal,
+        news: await scrapeNews(crypto.symbol, true),
+        tradingViewUrl: `https://www.tradingview.com/chart/?symbol=${crypto.symbol.toUpperCase()}USD`,
         lastUpdated: new Date().toISOString()
       };
     }));
 
-    // Process Stocks
-    const stockResponses = await Promise.all(CONFIG.STOCKS.symbols.map(fetchStockData));
-    const stockResults = stockResponses.filter(Boolean).map(response => {
-      const closes = response.data.indicators.quote[0].close.filter(Boolean);
-      const indicators = Analyzer.calculateIndicators(closes);
-      if (!indicators) return null;
-
+    // Fetch stock data
+    const stockResults = await Promise.all(CONFIG.STOCKS.symbols.map(async symbol => {
+      const stock = await fetchStockData(symbol);
+      if (!stock) return null;
+      
+      const closes = stock.indicators.quote[0].close.filter(Boolean);
+      if (closes.length < 14) return null;
+      
+      const indicators = calculateIndicators(closes);
+      const signal = generateSignal({}, indicators, false);
+      
       return {
-        symbol: response.symbol,
-        name: response.data.meta.symbol,
-        price: response.data.indicators.quote[0].close[closes.length - 1],
-        change24h: ((response.data.indicators.quote[0].close[closes.length - 1] / 
-                   response.data.indicators.quote[0].close[0] - 1) * 100,
-        volume: response.data.indicators.quote[0].volume.reduce((a, b) => a + b, 0),
+        symbol: stock.meta.symbol,
+        name: stock.meta.symbol,
+        price: stock.meta.regularMarketPrice,
+        change24h: ((stock.meta.regularMarketPrice / stock.meta.previousClose - 1) * 100),
+        volume: stock.meta.regularMarketVolume,
         ...indicators,
-        tradingViewUrl: `https://www.tradingview.com/chart/?symbol=${response.symbol}`,
+        ...signal,
+        news: await scrapeNews(symbol, false),
+        tradingViewUrl: `https://www.tradingview.com/chart/?symbol=${stock.meta.symbol}`,
         lastUpdated: new Date().toISOString()
       };
-    }).filter(Boolean);
+    }));
 
     // Save results
     fs.writeFileSync('data/crypto.json', JSON.stringify({
       lastUpdated: new Date().toISOString(),
-      data: cryptoResults.filter(Boolean)
+      data: cryptoResults
     }, null, 2));
 
     fs.writeFileSync('data/stocks.json', JSON.stringify({
       lastUpdated: new Date().toISOString(),
-      data: stockResults
+      data: stockResults.filter(Boolean)
     }, null, 2));
 
     console.log('Scan completed successfully');
   } catch (error) {
-    console.error('Processing failed:', error);
+    console.error('Scan failed:', error);
   }
 }
 
-processAssets();
+runScan();
