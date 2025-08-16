@@ -6,19 +6,22 @@ if (!fs.existsSync('data')) {
   fs.mkdirSync('data');
 }
 
-async function fetchCryptoData() {
+async function fetchMarketData() {
   try {
-    const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
+    console.log('Fetching market data...');
+    
+    // Fetch crypto data
+    const cryptoResponse = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
       params: {
         vs_currency: 'usd',
         order: 'market_cap_desc',
-        per_page: 10,
+        per_page: 50,
         price_change_percentage: '24h'
       },
       timeout: 10000
     });
 
-    const data = response.data.map(coin => ({
+    const cryptoData = cryptoResponse.data.map(coin => ({
       symbol: coin.symbol.toUpperCase(),
       name: coin.name,
       price: coin.current_price,
@@ -27,20 +30,22 @@ async function fetchCryptoData() {
       lastUpdated: new Date().toISOString()
     }));
 
+    // Save data
     fs.writeFileSync('data/crypto.json', JSON.stringify({
       lastUpdated: new Date().toISOString(),
-      data: data
-    }));
+      data: cryptoData
+    }, null, 2));
 
-    console.log('Successfully fetched crypto data');
+    console.log('Successfully updated market data');
   } catch (error) {
     console.error('Error fetching data:', error.message);
     // Write empty file on error
     fs.writeFileSync('data/crypto.json', JSON.stringify({
       lastUpdated: new Date().toISOString(),
-      data: []
+      data: [],
+      error: error.message
     }));
   }
 }
 
-fetchCryptoData();
+fetchMarketData();
