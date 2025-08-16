@@ -1,7 +1,7 @@
 {
   "name": "trading-scanner",
   "version": "1.0.0",
-  "description": "Advanced trading scanner dashboard",
+  "description": "Advanced trading scanner for crypto and stocks",
   "main": "fetch.js",
   "scripts": {
     "start": "node fetch.js",
