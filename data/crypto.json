@@ -1,1 +1,425 @@
-[]
+{
+  "lastUpdated": "2025-08-16T11:02:55.560Z",
+  "data": [
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": 117903.7017188172,
+      "change24h": -1.33789,
+      "volume": 39801890875,
+      "rsi": 44.25,
+      "ema9": 117688.37739393245,
+      "ema21": 117910.13142418537,
+      "atr": 2363.0512341545427,
+      "score": 44,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 114359.12486758539,
+        "takeProfit": 124992.85542128084,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=BTCUSD",
+      "lastUpdated": "2025-08-16T11:02:54.619Z"
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "price": 4454.865585353516,
+      "change24h": -5.06659,
+      "volume": 44992577422,
+      "rsi": 38.95,
+      "ema9": 4456.431417318557,
+      "ema21": 4488.23708779798,
+      "atr": 93.19291913840206,
+      "score": 34,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 4315.076206645913,
+        "takeProfit": 4734.444342768722,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=ETHUSD",
+      "lastUpdated": "2025-08-16T11:02:54.577Z"
+    },
+    {
+      "symbol": "XRP",
+      "name": "XRP",
+      "price": 3.110256522156864,
+      "change24h": 0.64064,
+      "volume": 6322390358,
+      "rsi": 50.48,
+      "ema9": 3.095155607973636,
+      "ema21": 3.093953089857582,
+      "atr": 0.06233539791778178,
+      "score": 52,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 3.0167534252801915,
+        "takeProfit": 3.2972627159102093,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=XRPUSD",
+      "lastUpdated": "2025-08-16T11:02:54.712Z"
+    },
+    {
+      "symbol": "USDT",
+      "name": "Tether",
+      "price": 1.0007315580895098,
+      "change24h": 0.00089,
+      "volume": 103691898780,
+      "rsi": 54.09,
+      "ema9": 1.000674889374039,
+      "ema21": 1.000635563780382,
+      "atr": 0.020012338679786364,
+      "score": 52,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 0.9707130500698302,
+        "takeProfit": 1.0607685741288688,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=USDTUSD",
+      "lastUpdated": "2025-08-16T11:02:54.663Z"
+    },
+    {
+      "symbol": "BNB",
+      "name": "BNB",
+      "price": 836.7208834912805,
+      "change24h": -2.06356,
+      "volume": 1371174467,
+      "rsi": 47.85,
+      "ema9": 832.4168245593307,
+      "ema21": 833.4567444823695,
+      "atr": 16.8506065270767,
+      "score": 45,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 811.4449737006654,
+        "takeProfit": 887.2727030725105,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=BNBUSD",
+      "lastUpdated": "2025-08-16T11:02:54.857Z"
+    },
+    {
+      "symbol": "SOL",
+      "name": "Solana",
+      "price": 187.9383746316494,
+      "change24h": -4.31925,
+      "volume": 7975233146,
+      "rsi": 38.31,
+      "ema9": 187.34712231922654,
+      "ema21": 188.72040137988674,
+      "atr": 3.9399512712249094,
+      "score": 36,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 182.02844772481203,
+        "takeProfit": 199.75822844532414,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=SOLUSD",
+      "lastUpdated": "2025-08-16T11:02:54.917Z"
+    },
+    {
+      "symbol": "USDC",
+      "name": "USDC",
+      "price": 0.9998171309313862,
+      "change24h": -0.00458,
+      "volume": 18170681796,
+      "rsi": 51.49,
+      "ema9": 0.9998029755816451,
+      "ema21": 0.9998087303418194,
+      "atr": 0.019996158527016403,
+      "score": 51,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 0.9698228931408616,
+        "takeProfit": 1.0598056065124355,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=USDCUSD",
+      "lastUpdated": "2025-08-16T11:02:54.739Z"
+    },
+    {
+      "symbol": "STETH",
+      "name": "Lido Staked Ether",
+      "price": 4415.4596246530755,
+      "change24h": -5.12075,
+      "volume": 77302627,
+      "rsi": 33.21,
+      "ema9": 4440.519131151707,
+      "ema21": 4472.0495214775265,
+      "atr": 92.11771782802188,
+      "score": 31,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 4277.283047911043,
+        "takeProfit": 4691.812778137141,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=STETHUSD",
+      "lastUpdated": "2025-08-16T11:02:54.792Z"
+    },
+    {
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "price": 0.23349426047845476,
+      "change24h": -0.29374,
+      "volume": 3934958434,
+      "rsi": 56.05,
+      "ema9": 0.23146642949350343,
+      "ema21": 0.2298311283794509,
+      "atr": 0.005058375508249515,
+      "score": 52,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 0.22590669721608048,
+        "takeProfit": 0.24866938700320332,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=DOGEUSD",
+      "lastUpdated": "2025-08-16T11:02:54.763Z"
+    },
+    {
+      "symbol": "TRX",
+      "name": "TRON",
+      "price": 0.3548340731464756,
+      "change24h": -2.12789,
+      "volume": 1532894692,
+      "rsi": 46.81,
+      "ema9": 0.353483763681022,
+      "ema21": 0.35435755642982386,
+      "atr": 0.007126517598032535,
+      "score": 44,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 0.34414429674942676,
+        "takeProfit": 0.37621362594057317,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=TRXUSD",
+      "lastUpdated": "2025-08-16T11:02:54.834Z"
+    },
+    {
+      "symbol": "ADA",
+      "name": "Cardano",
+      "price": 0.956183005681045,
+      "change24h": -3.94054,
+      "volume": 3489238675,
+      "rsi": 55.82,
+      "ema9": 0.9540962237548606,
+      "ema21": 0.9468987796037185,
+      "atr": 0.021895623330072098,
+      "score": 45,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 0.9233395706859369,
+        "takeProfit": 1.0218698756712612,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=ADAUSD",
+      "lastUpdated": "2025-08-16T11:02:54.812Z"
+    },
+    {
+      "symbol": "WSTETH",
+      "name": "Wrapped stETH",
+      "price": 5357.9811204198895,
+      "change24h": -5.28235,
+      "volume": 80062765,
+      "rsi": 32.76,
+      "ema9": 5378.78109740285,
+      "ema21": 5414.616734520387,
+      "atr": 112.1765132961811,
+      "score": 31,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 5189.716350475617,
+        "takeProfit": 5694.510660308433,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=WSTETHUSD",
+      "lastUpdated": "2025-08-16T11:02:54.471Z"
+    },
+    {
+      "symbol": "HYPE",
+      "name": "Hyperliquid",
+      "price": 47.84274775335068,
+      "change24h": -3.73571,
+      "volume": 331165307,
+      "rsi": 47.88,
+      "ema9": 47.72351649608842,
+      "ema21": 47.533695587142915,
+      "atr": 1.0469553814861345,
+      "score": 41,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 46.27231468112148,
+        "takeProfit": 50.983613897809086,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=HYPEUSD",
+      "lastUpdated": "2025-08-16T11:02:55.037Z"
+    },
+    {
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "price": 117946.45856598213,
+      "change24h": -1.21517,
+      "volume": 212002429,
+      "rsi": 46.47,
+      "ema9": 117690.54945994749,
+      "ema21": 117894.20994918427,
+      "atr": 2362.571512258234,
+      "score": 46,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 114402.60129759478,
+        "takeProfit": 125034.17310275685,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=WBTCUSD",
+      "lastUpdated": "2025-08-16T11:02:54.953Z"
+    },
+    {
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "price": 21.876844527485737,
+      "change24h": -3.28397,
+      "volume": 1103275921,
+      "rsi": 37.68,
+      "ema9": 21.876160404595623,
+      "ema21": 21.99414674026235,
+      "atr": 0.467002540871985,
+      "score": 37,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 21.17634071617776,
+        "takeProfit": 23.27785215010169,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=LINKUSD",
+      "lastUpdated": "2025-08-16T11:02:55.019Z"
+    },
+    {
+      "symbol": "WBETH",
+      "name": "Wrapped Beacon ETH",
+      "price": 4792.271203980587,
+      "change24h": -4.9846,
+      "volume": 23330991,
+      "rsi": 38.72,
+      "ema9": 4794.111615705898,
+      "ema21": 4827.2232298034,
+      "atr": 100.25138571072137,
+      "score": 34,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 4641.894125414506,
+        "takeProfit": 5093.025361112751,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=WBETHUSD",
+      "lastUpdated": "2025-08-16T11:02:54.740Z"
+    },
+    {
+      "symbol": "XLM",
+      "name": "Stellar",
+      "price": 0.4261787976539452,
+      "change24h": -0.30884,
+      "volume": 476171156,
+      "rsi": 43.44,
+      "ema9": 0.42842873060736536,
+      "ema21": 0.42801839811732795,
+      "atr": 0.008656794373433255,
+      "score": 46,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 0.4131936060937953,
+        "takeProfit": 0.45214918077424493,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=XLMUSD",
+      "lastUpdated": "2025-08-16T11:02:54.878Z"
+    },
+    {
+      "symbol": "SUI",
+      "name": "Sui",
+      "price": 3.7389016994105817,
+      "change24h": -3.39043,
+      "volume": 1972690125,
+      "rsi": 46.24,
+      "ema9": 3.7312134936520756,
+      "ema21": 3.745092722955066,
+      "atr": 0.07876679659209054,
+      "score": 41,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 3.620751504522446,
+        "takeProfit": 3.9752020891868534,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=SUIUSD",
+      "lastUpdated": "2025-08-16T11:02:55.002Z"
+    },
+    {
+      "symbol": "WEETH",
+      "name": "Wrapped eETH",
+      "price": 4748.596010086861,
+      "change24h": -5.03248,
+      "volume": 20728325,
+      "rsi": 33.12,
+      "ema9": 4772.502394165609,
+      "ema21": 4805.137722183829,
+      "atr": 99.39884959035916,
+      "score": 31,
+      "validation": "Neutral market conditions",
+      "risk": {
+        "stopLoss": 4599.497735701322,
+        "takeProfit": 5046.792558857938,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=WEETHUSD",
+      "lastUpdated": "2025-08-16T11:02:54.986Z"
+    },
+    {
+      "symbol": "BCH",
+      "name": "Bitcoin Cash",
+      "price": 597.4457694133913,
+      "change24h": -0.83763,
+      "volume": 189302543,
+      "rsi": 55.04,
+      "ema9": 594.1534459742915,
+      "ema21": 593.5002360693132,
+      "atr": 11.93743812443691,
+      "score": 51,
+      "validation": "Bullish EMA Cross",
+      "risk": {
+        "stopLoss": 579.5396122267359,
+        "takeProfit": 633.258083786702,
+        "positionSize": "10.0%"
+      },
+      "news": [],
+      "tradingViewUrl": "https://www.tradingview.com/chart/?symbol=BCHUSD",
+      "lastUpdated": "2025-08-16T11:02:54.897Z"
+    }
+  ]
+}
