@@ -16,16 +16,20 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          cache: 'npm'  # Remove this line if you don't want to use caching
 
       - name: Install dependencies
         run: |
           npm install axios technicalindicators cheerio mathjs
-          rm -rf package*.json
+          # Create a minimal package.json to satisfy the cache if needed
+          if [ ! -f package.json ]; then
+            echo '{"name":"trading-scanner","version":"1.0.0","private":true}' > package.json
+          fi
+          npm install
 
       - name: Create data directory
         run: mkdir -p data
